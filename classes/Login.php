@@ -34,7 +34,7 @@ class Login
             }
             if (!$this->db_connection->connect_errno) {
                 $user_name = $this->db_connection->real_escape_string($_POST['user_name']);
-                $sql = "SELECT username, email, password
+                $sql = "SELECT username, email, password, zipcode, firstname, lastname
                         FROM member
                         WHERE username = '" . $user_name . "';";
                 $result_of_login_check = $this->db_connection->query($sql);
@@ -43,7 +43,11 @@ class Login
                     if (password_verify($_POST['user_password'], $result_row->password)) {
                         $_SESSION['user_name'] = $result_row->username;
                         $_SESSION['user_email'] = $result_row->email;
+                        $_SESSION['user_firstname'] = $result_row->firstname;
+                        $_SESSION['user_lastname'] = $result_row->lastname;
+                        $_SESSION['user_zipcode'] = $result_row->zipcode;
                         $_SESSION['user_login_status'] = 1;
+
                     } else {
                         $this->messages = "Wrong username / password combination. Try again.";
                     }
