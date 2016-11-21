@@ -1,6 +1,8 @@
 <?php
-
-
+session_start();
+if(!isset($_SESSION['user_login_status'])){
+  header("Location: index.php");
+}
 ?>
 <html>
 <head>
@@ -26,21 +28,23 @@
   <nav class="navbar" style="background-color:#00BFFF;">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a style="color:white;font-size:20px;background-color:#00BFFF;" class="navbar-brand">Welcome, <?php echo $_SESSION['user_firstname']; ?></a>
+        <a style="color:white;font-weight:bold;font-size:20px;background-color:#00BFFF;" class="navbar-brand">Welcome, <?php echo $_SESSION['user_firstname']; ?></a>
       </div>
       <ul class="nav navbar-nav">
+        <li><a style="color:white;background-color:#00BFFF;" href="#">Home</a></li>
         <li><a style="color:white;background-color:#00BFFF;" href="#">Interests</a></li>
-        <li><a style="color:white;background-color:#00BFFF;" href="#">Group</a></li>
-        <li><a style="color:white;background-color:#00BFFF;" href="#">Event</a></li>
+        <li><a style="color:white;background-color:#00BFFF;" href="#">Groups</a></li>
+        <li><a style="color:white;background-color:#00BFFF;" href="#">Events</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <!--same as"index.php?logout=true" -->
-        <li><a style="color:white;margin-top:-4px;background-color:#00BFFF;" href="index.php?logout"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a></li>
+        <li><a style="color:white;margin-top:-4px;background-color:#00BFFF;" href="logout.php"><span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout</a></li>
       </ul>
     </div>
   </nav>
 
-
+  <form action="index.php">
+  </form>
 
 <script type="text/javascript">
 $(document).ready(function(){
