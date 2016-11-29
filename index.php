@@ -39,7 +39,7 @@ require_once("config/db.php");
   <?php
     if(isset($_SESSION['loginErrorMsg'])){
       echo $_SESSION['loginErrorMsg'];
-      session_unset();
+      unset($_SESSION['loginErrorMsg']);
     }
   ?>
 </div>

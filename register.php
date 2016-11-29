@@ -56,7 +56,7 @@ require_once("config/db.php");
   <?php
     if(isset($_SESSION['registerErrorMsg'])){
       echo $_SESSION['registerErrorMsg'];
-      session_unset();
+      unset($_SESSION['registerErrorMsg']);
     }
   ?>
 </div>

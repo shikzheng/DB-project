@@ -31,9 +31,10 @@ if(!isset($_SESSION['user_login_status'])){
         <a style="color:white;font-weight:bold;font-size:20px;background-color:#00BFFF;" class="navbar-brand">Welcome, <?php echo $_SESSION['user_firstname']; ?></a>
       </div>
       <ul class="nav navbar-nav">
-        <li><a style="color:white;background-color:#00BFFF;" href="#">Home</a></li>
+        <li><a style="color:yellow;background-color:#00BFFF;" href="main.php">Home</a></li>
+        <li><a style="color:white;background-color:#00BFFF;" href="#">Friends</a></li>
         <li><a style="color:white;background-color:#00BFFF;" href="#">Interests</a></li>
-        <li><a style="color:white;background-color:#00BFFF;" href="#">Groups</a></li>
+        <li><a style="color:white;background-color:#00BFFF;" href="group.php">Groups</a></li>
         <li><a style="color:white;background-color:#00BFFF;" href="#">Events</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -43,8 +44,6 @@ if(!isset($_SESSION['user_login_status'])){
     </div>
   </nav>
 
-  <form action="index.php">
-  </form>
 
 <script type="text/javascript">
 $(document).ready(function(){
