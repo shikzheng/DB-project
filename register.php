@@ -22,23 +22,23 @@ require_once("config/db.php");
 <form class="form-signin" method="post" action="registerProcessing.php" name="registerform">
     <h2 class="form-signin-heading">Create an account</h2>
     <label class="sr-only" for="login_input_Firstname">First Name</label>
-    <input class="form-control" style = "height:45px;" placeholder="First Name" id="login_input_Firstname" class="login_input" type="text" value = "<?php if((isset($_SESSION["registration_user_firstname"]) && ($_SESSION['registerErrorMsg'] != "Your account has been created successfully. You can now log in."))){ echo $_SESSION["registration_user_firstname"];
+    <input class="form-control" style = "height:45px;" placeholder="First Name" id="login_input_Firstname" class="login_input" type="text" value = "<?php if((isset($_SESSION["registration_user_firstname"]) && (isset($_SESSION["registerErrorMsg"])) && ($_SESSION['registerErrorMsg'] != "Your account has been created successfully. You can now log in."))){ echo $_SESSION["registration_user_firstname"];
  } ?>" name="user_firstname" autocomplete="off" autofocus required />
     <br>
     <label class="sr-only" for="login_input_Lastname">Last Name</label>
-    <input class="form-control" style = "height:45px;" placeholder="Last Name" id="login_input_Lastname" class="login_input" type="text" value = "<?php if((isset($_SESSION["registration_user_lastname"]) && ($_SESSION['registerErrorMsg'] != "Your account has been created successfully. You can now log in."))){ echo $_SESSION["registration_user_lastname"];
+    <input class="form-control" style = "height:45px;" placeholder="Last Name" id="login_input_Lastname" class="login_input" type="text" value = "<?php if((isset($_SESSION["registration_user_lastname"]) && (isset($_SESSION["registerErrorMsg"])) && ($_SESSION['registerErrorMsg'] != "Your account has been created successfully. You can now log in."))){ echo $_SESSION["registration_user_lastname"];
  } ?>" name="user_lastname" autocomplete="off" autofocus required />
     <br>
     <label class="sr-only" for="login_input_email">User's email</label>
-    <input class="form-control" style = "height:45px;" placeholder="Email" id="login_input_email" class="login_input" type="email" value = "<?php if((isset($_SESSION["registration_user_email"]) && ($_SESSION['registerErrorMsg'] != "Your account has been created successfully. You can now log in."))){ echo $_SESSION["registration_user_email"];
+    <input class="form-control" style = "height:45px;" placeholder="Email" id="login_input_email" class="login_input" type="email" value = "<?php if((isset($_SESSION["registration_user_email"]) && (isset($_SESSION["registerErrorMsg"])) && ($_SESSION['registerErrorMsg'] != "Your account has been created successfully. You can now log in."))){ echo $_SESSION["registration_user_email"];
  } ?>" name="user_email" autocomplete="off" autofocus required />
     <br>
     <label class="sr-only" for="login_input_Zipcode">Zip Code</label>
-    <input class="form-control" style = "height:45px;" placeholder="Zip code" id="login_input_Zipcode" class="login_input" type="text" value = "<?php if((isset($_SESSION["registration_user_zipcode"]) && ($_SESSION['registerErrorMsg'] != "Your account has been created successfully. You can now log in."))){ echo $_SESSION["registration_user_zipcode"];
+    <input class="form-control" style = "height:45px;" placeholder="Zip code" id="login_input_Zipcode" class="login_input" type="text" value = "<?php if((isset($_SESSION["registration_user_zipcode"]) && (isset($_SESSION["registerErrorMsg"])) && ($_SESSION['registerErrorMsg'] != "Your account has been created successfully. You can now log in."))){ echo $_SESSION["registration_user_zipcode"];
  } ?>" name="user_zipcode" autocomplete="off" autofocus required />
     <br>
     <label class="sr-only" for="login_input_username">Username</label>
-    <input class="form-control" style = "height:45px;" placeholder="Username" id="login_input_username" class="login_input" type="text" value = "<?php if((isset($_SESSION["registration_user_name"]) && ($_SESSION['registerErrorMsg'] != "Your account has been created successfully. You can now log in."))){ echo $_SESSION["registration_user_name"];
+    <input class="form-control" style = "height:45px;" placeholder="Username" id="login_input_username" class="login_input" type="text" value = "<?php if((isset($_SESSION["registration_user_name"]) && (isset($_SESSION["registerErrorMsg"])) && ($_SESSION['registerErrorMsg'] != "Your account has been created successfully. You can now log in."))){ echo $_SESSION["registration_user_name"];
  } ?>" name="user_name" autocomplete="off" autofocus required />
     <br>
     <label class="sr-only" for="login_input_password_new">Password</label>
