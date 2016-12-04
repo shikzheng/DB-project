@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once("config/db.php");
-
+$_SESSION['curr_user_name'] = $_POST['user_name'];
 if (empty($_POST['user_name'])) {
     $_SESSION['loginErrorMsg'] = "Username field was empty.";
 } elseif (empty($_POST['user_password'])) {
@@ -36,6 +36,7 @@ if (empty($_POST['user_name'])) {
         $_SESSION['loginErrorMsg'] = "Database connection problem.";
     }
 }
+$_SESSION['real_user_name'] = $_SESSION['user_name'];
 if($_SESSION['user_login_status'] != 1){
 header("Location:index.php");
 }else{

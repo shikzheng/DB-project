@@ -35,7 +35,6 @@ if(!isset($_SESSION['user_login_status'])){
         <li><a style="color:white;background-color:#00BFFF;" href="#">Friends</a></li>
         <li><a style="color:white;background-color:#00BFFF;" href="#">Interests</a></li>
         <li><a style="color:yellow;background-color:#00BFFF;" href="#">Groups</a></li>
-        <li><a style="color:white;background-color:#00BFFF;" href="#">Events</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <!--same as"index.php?logout=true" -->
@@ -140,6 +139,13 @@ if(!isset($_SESSION['user_login_status'])){
   </div>
 
   </div>
+
+
+  <form id = "group_page_hidden_form" class="form-signin" method="post" action="groupPage.php" style = "display:none;" name="">
+      <label class="sr-only" for="group_page_groupid"></label>
+      <input class="form-control" id="group_page_groupid" class="login_input" type="text" name="group_page_groupid" autocomplete="off" autofocus required />
+      <button class="btn btn-lg btn-primary btn-block" type="submit"  name="login"></button>
+  </form>
 <script src="//rawgithub.com/stidges/jquery-searchable/master/dist/jquery.searchable-1.0.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -148,7 +154,7 @@ $(document).ready(function(){
         striped: true,
         oddRow: { 'background-color': '#f5f5f5' },
         evenRow: { 'background-color': '#fff' },
-        searchType: 'fuzzy'
+        searchType: 'default'
     });
 
     $( '#searchable-container' ).searchable({
@@ -168,28 +174,33 @@ $(document).ready(function(){
   var groupName = [];
   var category = [];
   var keywords = [];
+  var groupid = [];
   <?php
       require_once("config/db.php");
       $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
       $groupName = array();
       $category = array();
       $keywords = array();
+      $group_id = array();
       if (!$connection->connect_errno) {
-        $sql = "SELECT category,keyword,group_name FROM about NATURAL JOIN a_group;";
+        $sql = "SELECT category,keyword,group_name,group_id FROM about NATURAL JOIN a_group;";
         $query= $connection->query($sql);
         while($row = $query->fetch_assoc()){
           array_push($category, $row['category']);
           array_push($keywords, $row['keyword']);
           array_push($groupName, $row['group_name']);
+          array_push($group_id, $row['group_id']);
         }
       }
    ?>
   groupName = <?php echo json_encode($groupName) ?>;
   category = <?php echo json_encode($category) ?>;
   keywords = <?php echo json_encode($keywords) ?>;
+  groupid = <?php echo json_encode($group_id) ?>;
 
   for(var i = 0; i < groupName.length; i++){
     var newRow   = tableRef.insertRow(tableRef.rows.length);
+    newRow.setAttribute( "onClick", "SelectedGroup(" + groupid[i] + ")");
     var newCell1  = newRow.insertCell(0);
     var newCell2  = newRow.insertCell(1);
     var newCell3  = newRow.insertCell(2);
@@ -204,6 +215,12 @@ $(document).ready(function(){
 
 
 });
+
+function SelectedGroup(gid){
+  var input = document.getElementById('group_page_groupid');
+  input.value = gid;
+  document.getElementById('group_page_hidden_form').submit();
+}
 </script>
 </body>
 </html>

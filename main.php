@@ -35,7 +35,6 @@ if(!isset($_SESSION['user_login_status'])){
         <li><a style="color:white;background-color:#00BFFF;" href="#">Friends</a></li>
         <li><a style="color:white;background-color:#00BFFF;" href="#">Interests</a></li>
         <li><a style="color:white;background-color:#00BFFF;" href="group.php">Groups</a></li>
-        <li><a style="color:white;background-color:#00BFFF;" href="#">Events</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <!--same as"index.php?logout=true" -->

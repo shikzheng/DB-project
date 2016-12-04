@@ -12,8 +12,8 @@ $_SESSION["creategroup_Keywords"] = $_POST['creategroup_Keywords'];
       $_SESSION['createGroupErrorMsg'] = "Group Name may not be more than 20 characters";
     } elseif(strlen($_POST['creategroup_Category'])>20){
       $_SESSION['createGroupErrorMsg'] = "Category may not be more than 20 characters";
-    } elseif(strlen($_POST['creategroup_Keywords'])>20){
-      $_SESSION['createGroupErrorMsg'] = "Keywords may not be more than 20 characters";
+    } elseif(strlen($_POST['creategroup_Keywords'])>50){
+      $_SESSION['createGroupErrorMsg'] = "Keywords may not be more than 50 characters";
     } else{
         $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         if (!$connection->set_charset("utf8")) {
