@@ -16,6 +16,9 @@ require_once("config/db.php");
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <style>
+body{
+  background-color:#87CEFA;
+}
 </style>
 <body>
   <div style="margin-left:auto;margin-right:auto;text-align:center;margin-top:20px;">

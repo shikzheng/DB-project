@@ -16,12 +16,15 @@ require_once("config/db.php");
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <style>
+body{
+  background-color:#87CEFA;
+}
 </style>
 <body>
-<div style="margin-left:auto;margin-right:auto;text-align:center;margin-top:20px;">
-  <img src="images/logo.png" style="width:300px;" alt="Avatar" class="Avatar">
+<div style="margin-left:auto;margin-right:auto;text-align:center;margin-top:40px;">
+  <img src="images/logo.png" style="width:300px;">
 </div>
-<div class="container" style = "width:350px;margin-top:20px;">
+<div class="container" style = "width:350px;margin-top:40px;">
 <form class="form-signin" method="post" action="loginProcessing.php" name="loginform">
     <h2 class="form-signin-heading">Sign in</h2>
     <label class="sr-only" for="Username">Username</label>
@@ -48,7 +51,7 @@ require_once("config/db.php");
   ?>
 </div>
 </div>
-<div class="row" style="width:100%;">
+<div class="row" style="width:100%;margin-top:60px;">
   <div class="col-md-6">
       <h2 class="form-signin-heading" style="text-align:center;">Current Groups</h2>
         <div class="row">
