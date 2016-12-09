@@ -120,7 +120,7 @@ if(!isset($_SESSION['user_login_status'])){
           </div>
           <div class="row">
               <div class="col-lg-12">
-                  <table class="table" id="table">
+                  <table class="table table-striped" id="table">
                       <thead>
                           <tr>
                               <th>Group Name</th>
@@ -137,11 +137,10 @@ if(!isset($_SESSION['user_login_status'])){
           </div>
     </div>
   </div>
-
   </div>
 
 
-  <form id = "group_page_hidden_form" class="form-signin" method="post" action="groupPage.php" style = "display:none;" name="">
+  <form id = "group_page_hidden_form" class="form-signin" method="get" action="groupPage.php" style = "display:none;" name="">
       <label class="sr-only" for="group_page_groupid"></label>
       <input class="form-control" id="group_page_groupid" class="login_input" type="text" name="group_page_groupid" autocomplete="off" autofocus required />
       <button class="btn btn-lg btn-primary btn-block" type="submit"  name="login"></button>
@@ -151,23 +150,8 @@ if(!isset($_SESSION['user_login_status'])){
 $(document).ready(function(){
   $(function () {
     $( '#table' ).searchable({
-        striped: true,
-        oddRow: { 'background-color': '#f5f5f5' },
-        evenRow: { 'background-color': '#fff' },
         searchType: 'default'
     });
-
-    $( '#searchable-container' ).searchable({
-        searchField: '#container-search',
-        selector: '.row',
-        childSelector: '.col-xs-4',
-        show: function( elem ) {
-            elem.slideDown(100);
-        },
-        hide: function( elem ) {
-            elem.slideUp( 100 );
-        }
-    })
 });
 
   var tableRef = document.getElementById('table').getElementsByTagName('tbody')[0];

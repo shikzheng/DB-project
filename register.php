@@ -18,7 +18,10 @@ require_once("config/db.php");
 <style>
 </style>
 <body>
-<div class="container" style = "width:400px;">
+  <div style="margin-left:auto;margin-right:auto;text-align:center;margin-top:20px;">
+    <img src="images/logo.png" style="width:300px;" alt="Avatar" class="Avatar">
+  </div>
+<div class="container" style = "width:400px;margin-top:20px;">
 <form class="form-signin" method="post" action="registerProcessing.php" name="registerform">
     <h2 class="form-signin-heading">Create an account</h2>
     <label class="sr-only" for="login_input_Firstname">First Name</label>

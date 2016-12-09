@@ -1,11 +1,11 @@
 <?php
 session_start();
-if (isset($_POST['group_page_groupid'])){
-$_SESSION['group_page_groupid'] = $_POST['group_page_groupid'];
+if (isset($_GET['group_page_groupid'])){
+$_SESSION['group_page_groupid'] = $_GET['group_page_groupid'];
 }
 if(!isset($_SESSION['user_login_status'])){
   header("Location: index.php");
-}else if (!isset($_POST['group_page_groupid']) && !isset($_SESSION['group_page_groupid'])){
+}else if (!isset($_GET['group_page_groupid']) && !isset($_SESSION['group_page_groupid'])){
   header("Location: group.php");
 }
 require_once("config/db.php");
@@ -91,6 +91,7 @@ if (!$connection->connect_errno) {
   <div class="col-md-4" id="authorizedOnly2">
     <div style="width:auto;height:auto;border:1px solid #e3e3e3;border-radius:4px;text-align:center;background-color:#FFFFFF;text-align:center;">
               <h2 class="panel-heading" style="font-size:20px;">Group Members</h2>
+              <input type="search" id="memberSearch" value="" class="form-control" style = "width:200px;margin-left:auto;margin-right:auto;text-align:center;" placeholder="Search Member">
                 <table class="table table-striped" id="table">
                     <thead>
                         <tr>
@@ -114,7 +115,7 @@ if (!$connection->connect_errno) {
     </div>
 </div>
 
-  <div class="col-md-4" id = "authorizedOnly" style="border:1px solid #e3e3e3;border-radius:4px;background-color:#f5f5f5;height:790px;">
+  <div class="col-md-4" id = "authorizedOnly" style="border:1px solid #e3e3e3;border-radius:4px;background-color:#f5f5f5;">
 
 
     <form class="form-signin" method="post" action="createEventProcessing.php" style="width:90%;margin-left:auto;margin-right:auto;">
@@ -122,67 +123,54 @@ if (!$connection->connect_errno) {
         <label class="sr-only" for="createEvent_Title">Title</label>
         <input class="form-control"  value = "<?php if((isset($_SESSION["createEvent_Title"]) && (isset($_SESSION["createEventErrorMsg"])) && ($_SESSION['createEventErrorMsg'] != "Success! The event has been created."))){ echo $_SESSION["createEvent_Title"];} ?>"
         style = "height:45px;" placeholder="Title" id="createEvent_Title" class="login_input" type="text" name="createEvent_Title" autocomplete="off" autofocus required />
-        <br>
         <label class="sr-only" for="createEvent_Description">Description</label>
         <input class="form-control" value = "<?php if((isset($_SESSION["createEvent_Description"]) && (isset($_SESSION["createEventErrorMsg"])) && ($_SESSION['createEventErrorMsg'] != "Success! The event has been created."))){ echo $_SESSION["createEvent_Description"];} ?>"
          style = "height:45px;" placeholder="Description" id="createEvent_Description" class="login_input" type="text" name="createEvent_Description" autocomplete="off" autofocus required />
-        <br>
         <label class="sr-only" for="createEvent_StartTime">Start Time</label>
         <input class="form-control" value = "<?php if((isset($_SESSION["createEvent_StartTime"]) && (isset($_SESSION["createEventErrorMsg"])) && ($_SESSION['createEventErrorMsg'] != "Success! The event has been created."))){ echo $_SESSION["createEvent_StartTime"];} ?>"
          style = "height:45px;" placeholder="Start Time" id="createEvent_StartTime" class="login_input" type="datetime-local" name="createEvent_StartTime" autocomplete="off" autofocus required />
-        <br>
         <label class="sr-only" for="createEvent_EndTime">End Time</label>
         <input class="form-control" value = "<?php if((isset($_SESSION["createEvent_EndTime"])&& (isset($_SESSION["createEventErrorMsg"]))  && ($_SESSION['createEventErrorMsg'] != "Success! The event has been created."))){ echo $_SESSION["createEvent_EndTime"];} ?>"
          style = "height:45px;" placeholder="End Time" id="createEvent_EndTime" class="login_input" type="datetime-local" name="createEvent_EndTime" autocomplete="off" autofocus required />
-        <br>
         <label class="sr-only" for="createEvent_Location_Name">Location Name</label>
         <input class="form-control" value = "<?php if((isset($_SESSION["createEvent_Location_Name"])&& (isset($_SESSION["createEventErrorMsg"]))  && ($_SESSION['createEventErrorMsg'] != "Success! The event has been created."))){ echo $_SESSION["createEvent_Location_Name"];} ?>"
          style = "height:45px;" placeholder="Location Name" id="createEvent_Location_Name" class="login_input" type="text" name="createEvent_Location_Name" autocomplete="off" autofocus required />
-        <br>
-
         <label class="sr-only" for="createEvent_Location_Address">Location Address</label>
         <input class="form-control" value = "<?php if((isset($_SESSION["createEvent_Location_Address"])&& (isset($_SESSION["createEventErrorMsg"]))  && ($_SESSION['createEventErrorMsg'] != "Success! The event has been created."))){ echo $_SESSION["createEvent_Location_Address"];} ?>"
          style = "height:45px;" placeholder="Location Address" id="createEvent_Location_Address" class="login_input" type="text" name="createEvent_Location_Address" autocomplete="off" autofocus required />
-        <br>
         <label class="sr-only" for="createEvent_Location_Description">Location Description</label>
         <input class="form-control" value = "<?php if((isset($_SESSION["createEvent_Location_Description"])&& (isset($_SESSION["createEventErrorMsg"]))  && ($_SESSION['createEventErrorMsg'] != "Success! The event has been created."))){ echo $_SESSION["createEvent_Location_Description"];} ?>"
          style = "height:45px;" placeholder="Location Description" id="createEvent_Location_Description" class="login_input" type="text" name="createEvent_Location_Description" autocomplete="off" autofocus required />
-        <br>
         <label class="sr-only" for="createEvent_Location_Latitude">Location Latitude</label>
         <input class="form-control" value = "<?php if((isset($_SESSION["createEvent_Location_Latitude"])&& (isset($_SESSION["createEventErrorMsg"]))  && ($_SESSION['createEventErrorMsg'] != "Success! The event has been created."))){ echo $_SESSION["createEvent_Location_Latitude"];} ?>"
          style = "height:45px;" placeholder="Location Latitude" id="createEvent_Location_Latitude" class="login_input" type="text" name="createEvent_Location_Latitude" autocomplete="off" autofocus required />
-        <br>
         <label class="sr-only" for="createEvent_Location_Longitude">Location Longitude</label>
         <input class="form-control" value = "<?php if((isset($_SESSION["createEvent_Location_Longitude"])&& (isset($_SESSION["createEventErrorMsg"]))  && ($_SESSION['createEventErrorMsg'] != "Success! The event has been created."))){ echo $_SESSION["createEvent_Location_Longitude"];} ?>"
          style = "height:45px;" placeholder="Location Longitude" id="createEvent_Location_Longitude" class="login_input" type="text" name="createEvent_Location_Longitude" autocomplete="off" autofocus required />
-        <br>
-
         <label class="sr-only" for="createEvent_ZipCode">Zip Code</label>
         <input class="form-control" value = "<?php if((isset($_SESSION["createEvent_ZipCode"])&& (isset($_SESSION["createEventErrorMsg"]))  && ($_SESSION['createEventErrorMsg'] != "Success! The event has been created."))){ echo $_SESSION["createEvent_ZipCode"];} ?>"
          style = "height:45px;" placeholder="Zip Code" id="createEvent_ZipCode" class="login_input" type="text" name="createEvent_ZipCode" autocomplete="off" autofocus required />
         <br>
         <button class="btn btn-lg btn-primary btn-block" type="submit"  name="login">Create Event</button>
     </form>
-    <br>
-    <br>
-  </div>
-  <div style="width:300px;margin-left:auto;margin-right:auto;font-size:16px;text-align:center;font-weight:bold;">
-    <?php
-      if(isset($_SESSION['createEventErrorMsg'])){
-        echo $_SESSION['createEventErrorMsg'];
-        unset($_SESSION['createEventErrorMsg']);
-      }
-    ?>
+    <div style="margin-left:auto;margin-right:auto;font-size:16px;text-align:center;font-weight:bold;">
+      <?php
+        if(isset($_SESSION['createEventErrorMsg'])){
+          echo $_SESSION['createEventErrorMsg'];
+          unset($_SESSION['createEventErrorMsg']);
+        }
+      ?>
+    </div>
   </div>
   <div class="col-md-4">
 
 
     <div style="width:auto;height:auto;border:1px solid #e3e3e3;border-radius:4px;text-align:center;background-color:#FFFFFF;text-align:center;">
         <h2 class="panel-heading" style="font-size:20px;">Group Events</h2>
-        <input type="search" id="search" value="" class="form-control" style = "width:200px;margin-left:auto;margin-right:auto;" placeholder="Search Group Events">
+        <input type="search" id="search" value="" class="form-control" style = "width:200px;margin-left:auto;margin-right:auto;text-align:center;" placeholder="Search Group Events">
         <div class="row">
             <div class="col-lg-12">
-                <table class="table" id="EventTable">
+                <table class="table table-striped" id="EventTable">
                     <thead>
                         <tr>
                             <th>Title</th>
@@ -204,7 +192,7 @@ if (!$connection->connect_errno) {
   </div>
   </div>
   <a style="display:none;" id="current_user"><?php echo $_SESSION['user_name']; ?></a>
-  <form id = "event_page_hidden_form" class="form-signin" method="post" action="eventPage.php" style = "display:none;" name="">
+  <form id = "event_page_hidden_form" class="form-signin" method="get" action="eventPage.php" style = "display:none;" name="">
       <label class="sr-only" for="event_page_eventid"></label>
       <input class="form-control" id="event_page_eventid" class="login_input" type="text" name="event_page_eventid" autocomplete="off" autofocus required />
       <button class="btn btn-lg btn-primary btn-block" type="submit"  name="login"></button>
@@ -218,23 +206,13 @@ $(document).ready(function(){
 
     $(function () {
       $( '#EventTable' ).searchable({
-          striped: true,
-          oddRow: { 'background-color': '#f5f5f5' },
-          evenRow: { 'background-color': '#fff' },
+          searchType: 'default'
+      });
+      $( '#table' ).searchable({
+          searchField: '#memberSearch',
           searchType: 'default'
       });
 
-      $( '#searchable-container' ).searchable({
-          searchField: '#container-search',
-          selector: '.row',
-          childSelector: '.col-xs-4',
-          show: function( elem ) {
-              elem.slideDown(100);
-          },
-          hide: function( elem ) {
-              elem.slideUp( 100 );
-          }
-      })
   });
 
       var tableRef = document.getElementById('table').getElementsByTagName('tbody')[0];

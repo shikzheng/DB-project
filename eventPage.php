@@ -1,11 +1,11 @@
 <?php
 session_start();
-if (isset($_POST['event_page_eventid'])){
-$_SESSION['event_page_eventid'] = $_POST['event_page_eventid'];
+if (isset($_GET['event_page_eventid'])){
+$_SESSION['event_page_eventid'] = $_GET['event_page_eventid'];
 }
 if(!isset($_SESSION['user_login_status'])){
   header("Location: index.php");
-}else if (!isset($_POST['event_page_eventid']) && !isset($_SESSION['event_page_eventid'])){
+}else if (!isset($_GET['event_page_eventid']) && !isset($_SESSION['event_page_eventid'])){
   header("Location: group.php");
 }
 
