@@ -13,7 +13,7 @@ if (!$connection->connect_errno) {
   while($row = $query1->fetch_assoc()){
     array_push($eventEndTime, $row["end_time"]);
   }
-  if(time($eventEndTime[0]) >  time()){
+  if(strtotime($eventEndTime[0]) >  time()){
   $sql = "INSERT INTO sign_up (event_id, username, rating)
           VALUES('" . $eventId . "', '" .  $userName . "', 6);";
   $query = $connection->query($sql);
@@ -21,10 +21,6 @@ if (!$connection->connect_errno) {
   echo "Passed";
 }
 }
-
-
-
-
 
 
 ?>

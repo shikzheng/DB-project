@@ -160,13 +160,6 @@ body{
 
 </div>
   <div class="col-md-6" >
-    <form class="form-signin" method="post" action="SubmitRating.php" name="" style="margin-left:auto;margin-right:auto;border:1px solid #e3e3e3;border-radius:4px;background-color:#f5f5f5;width:500px;height:150px;">
-      <h3 class="form-signin-heading" style="margin-left:auto;margin-right:auto;text-align:center;">Rate This Event: <input type="number" id="event_rating" name="event_rating" min="1" max="5" required>&nbsp;Stars</h3>
-      <input class="form-control" id="rating_username" class="login_input" type="text" style="display:none;" name="rating_username" autocomplete="off" autofocus required />
-      <br>
-      <button class="btn btn-primary btn-block" style = "width:150px;height:40px;;text-align:center;margin-left:auto;margin-right:auto;" type="submit" id="submitRatingButton" name="login">Submit Rating</button>
-    </form>
-    <br>
     <div id="ratingErrorMsg" style="width:300px;margin-left:auto;margin-right:auto;font-size:16px;text-align:center;font-weight:bold;">
       <?php
         if(isset($_SESSION['RatingSubmitMsg'])){
@@ -175,6 +168,12 @@ body{
         }
       ?>
     </div>
+    <form class="form-signin" method="post" action="SubmitRating.php" name="" style="margin-left:auto;margin-right:auto;border:1px solid #e3e3e3;border-radius:4px;background-color:#f5f5f5;width:500px;height:150px;">
+      <h3 class="form-signin-heading" style="margin-left:auto;margin-right:auto;text-align:center;">Rate This Event: <input type="number" id="event_rating" name="event_rating" min="1" max="5" required>&nbsp;Stars</h3>
+      <input class="form-control" id="rating_username" class="login_input" type="text" style="display:none;" name="rating_username" autocomplete="off" autofocus required />
+      <br>
+      <button class="btn btn-primary btn-block" style = "width:150px;height:40px;;text-align:center;margin-left:auto;margin-right:auto;" type="submit" id="submitRatingButton" name="login">Submit Rating</button>
+    </form>
   </div>
 
 

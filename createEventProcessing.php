@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once("config/db.php");
-$_SESSION['user_login_status'] =
+$connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
 $_SESSION["createEvent_Title"] = $connection->real_escape_string(strip_tags($_POST['createEvent_Title'], ENT_QUOTES));
 $_SESSION["createEvent_Description"] = $connection->real_escape_string(strip_tags($_POST['createEvent_Description'], ENT_QUOTES));

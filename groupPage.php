@@ -87,8 +87,23 @@ body{
   </div>
   <div class=panel-body style="font-size:16px;background-color:#FFFFFF;border-bottom:1px solid #bce8f1;text-align:center;"><b>Group Category</b>: <?php echo $category[0];?>
   </div>
-  <div class=panel-body style="font-size:16px;background-color:#FFFFFF;text-align:center;"><b>Group Keywords</b>: <?php echo $keywords[0];?>
+  <div class=panel-body style="font-size:16px;background-color:#FFFFFF;text-align:center;border-bottom:1px solid #bce8f1;"><b>Group Keywords</b>: <?php echo $keywords[0];?>
   </div>
+  <div style="margin-left:auto;margin-right:auto;width:450px;margin-top:8px;height:auto;text-align:center;">
+      <form class="form-signin" method="post" action="GroupPageJoinGroupProcessing.php" name="" style="width:80%;margin-left:auto;margin-right:auto;">
+          <input class="form-control" style = "height:45px;display:none;" placeholder="Group Name" id="creategroup_GroupName" value = "<?php echo $groupName[0];?>" class="login_input" type="text" name="joingroup_GroupName" autocomplete="off" autofocus required />
+          <input class="form-control" style = "height:45px;display:none;" placeholder="Group Name" id="joingroup_GroupId" value = "<?php echo $groupid;?>" class="login_input" type="text" name="joingroup_GroupId" autocomplete="off" autofocus required />
+          <button class="btn btn-lg btn-primary btn-block" type="submit"  name="login">Join Group</button>
+      </form>
+      <div>
+        <?php
+          if(isset($_SESSION['JoinGroupErrorMsg2'])){
+            echo $_SESSION['JoinGroupErrorMsg2'];
+            unset($_SESSION['JoinGroupErrorMsg2']);
+          }
+        ?>
+      </div>
+ </div>
 </div>
 <div class="row" style="width:100%;">
   <div class="col-md-4" id="authorizedOnly2">

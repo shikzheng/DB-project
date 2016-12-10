@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once("config/db.php");
-
+$connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 $addFriend_username = $connection->real_escape_string(strip_tags($_POST['addFriend_username'], ENT_QUOTES));
 
     if (empty($addFriend_username)) {

@@ -3,7 +3,7 @@ session_start();
 require_once("config/db.php");
 //$_SESSION["creategroup_GroupName"] = $_POST['creategroup_GroupName'];
 //$_SESSION["creategroup_Description"] = $_POST['creategroup_Description'];
-
+$connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 $joingroup_GroupName = $connection->real_escape_string(strip_tags($_POST['joingroup_GroupName'], ENT_QUOTES));
 
     if (empty($joingroup_GroupName)) {
@@ -22,14 +22,14 @@ $joingroup_GroupName = $connection->real_escape_string(strip_tags($_POST['joingr
           if($result->num_rows < 1){
             $_SESSION['JoinGroupErrorMsg'] = "This group does not exist";
             header("Location:group.php");
-          }
+          }else{
           while($row = $result->fetch_assoc()){
             $sql = "SELECT * FROM belongs_to WHERE group_id = '" . $row["group_id"] . "' AND username = '" . $user . "';";
             $check1 = $connection->query($sql);
             if ($check1->num_rows == 1) {
                 $_SESSION['JoinGroupErrorMsg'] = "You've already joined the group";
                 header("Location:group.php");
-            }
+            }else{
             $sql2 = "INSERT INTO belongs_to (group_id, username, authorized)
                       VALUES('" . $row["group_id"] . "', '" . $user . "', '0');";
             $query_group_member_insert = $connection->query($sql2);
@@ -39,6 +39,8 @@ $joingroup_GroupName = $connection->real_escape_string(strip_tags($_POST['joingr
               $_SESSION['JoinGroupErrorMsg'] = "Error, please try again";
             }
           }
+          }
+        }
         } else {
             $_SESSION['JoinGroupErrorMsg'] = "Sorry, no database connection.";
         }

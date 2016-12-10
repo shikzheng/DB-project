@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once("config/db.php");
+$connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+
 $_SESSION["creategroup_GroupName"] = $connection->real_escape_string(strip_tags($_POST['creategroup_GroupName'], ENT_QUOTES));
 $_SESSION["creategroup_Description"] = $connection->real_escape_string(strip_tags($_POST['creategroup_Description'], ENT_QUOTES));
 $_SESSION["creategroup_Category"] = $connection->real_escape_string(strip_tags($_POST['creategroup_Category'], ENT_QUOTES));
