@@ -98,6 +98,7 @@ body{
                 <table class="table table-striped" id="table">
                     <thead>
                         <tr>
+                            <th>Username</th>
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Email</th>
@@ -219,20 +220,23 @@ $(document).ready(function(){
   });
 
       var tableRef = document.getElementById('table').getElementsByTagName('tbody')[0];
+      var username = [];
       var firstname = [];
       var lastname = [];
       var email = [];
       var allUserInGroup = [];
       var groupCreator = [];
       <?php
+      $theusername = array();
       $firstname = array();
       $lastname = array();
       $email = array();
       $AllUsername = array();
       if (!$connection->connect_errno) {
-        $sql = "SELECT firstname,lastname,email,username FROM member NATURAL JOIN belongs_to WHERE group_id = '" . $groupid . "';";
+        $sql = "SELECT username,firstname,lastname,email,username FROM member NATURAL JOIN belongs_to WHERE group_id = '" . $groupid . "';";
         $query= $connection->query($sql);
         while($row = $query->fetch_assoc()){
+          array_push($theusername, $row['username']);
           array_push($firstname, $row['firstname']);
           array_push($lastname, $row['lastname']);
           array_push($email, $row['email']);
@@ -240,22 +244,26 @@ $(document).ready(function(){
         }
       }
       ?>
+      username = <?php echo json_encode($theusername) ?>;
       firstname = <?php echo json_encode($firstname) ?>;
       lastname = <?php echo json_encode($lastname) ?>;
       email = <?php echo json_encode($email) ?>;
       allUserInGroup = <?php echo json_encode($AllUsername); ?>;
       groupCreator = <?php echo json_encode($creator); ?>;
-      for(var i = 0; i < firstname.length; i++){
+      for(var i = 0; i < username.length; i++){
         var newRow   = tableRef.insertRow(tableRef.rows.length);
         //newRow.setAttribute( "onClick", "SelectedGroup(" + groupid[i] + ")");
         var newCell1  = newRow.insertCell(0);
         var newCell2  = newRow.insertCell(1);
         var newCell3  = newRow.insertCell(2);
         var newCell4  = newRow.insertCell(3);
+        var newCell5  = newRow.insertCell(4);
 
-        var newText1  = document.createTextNode(firstname[i]);
-        var newText2  = document.createTextNode(lastname[i]);
-        var newText3  = document.createTextNode(email[i]);
+        var newText1  = document.createTextNode(username[i]);
+        var newText2  = document.createTextNode(firstname[i]);
+        var newText3  = document.createTextNode(lastname[i]);
+        var newText4  = document.createTextNode(email[i]);
+
         var checkBox = document.createElement("input");
         checkBox.id = "checkBox"+i;
         checkBox.type = "checkbox";
@@ -266,7 +274,8 @@ $(document).ready(function(){
         newCell1.appendChild(newText1);
         newCell2.appendChild(newText2);
         newCell3.appendChild(newText3);
-        newCell4.appendChild(checkBox);
+        newCell4.appendChild(newText4);
+        newCell5.appendChild(checkBox);
         }
 
       var authorizedArr = <?php echo json_encode($authorized); ?>;
@@ -421,7 +430,7 @@ $(document).ready(function(){
 
     for(var i = 0; i < title2.length; i++){
       var newRow   = tableRef.insertRow(tableRef.rows.length);
-      newRow.setAttribute( "onClick", "SelectedEvent(" + eventid[i] + ")");
+      newRow.setAttribute( "onclick", "SelectedEvent(" + eventid[i] + ")");
       var newCell1  = newRow.insertCell(0);
       var newCell2  = newRow.insertCell(1);
       var newCell3  = newRow.insertCell(2);

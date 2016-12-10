@@ -88,7 +88,7 @@ body{
     <br>
     <br>
     <div style="margin:auto;width:450px;height:230px;border:1px solid #e3e3e3;border-radius:4px;text-align:center;background-color:#f5f5f5;">
-        <form class="form-signin" method="post" action="JoinGroupProcessing.php" name="" style="width:80%;margin-left:auto;margin-right:auto;">
+        <form class="form-signin" method="post" action="AddFriendProcessing.php" name="" style="width:80%;margin-left:auto;margin-right:auto;">
             <h2 class="form-signin-heading">Join a Group</h2>
             <label class="sr-only" for="creategroup_GroupName">Group Name</label>
             <input class="form-control" style = "height:45px;" placeholder="Group Name" id="creategroup_GroupName" class="login_input" type="text" name="joingroup_GroupName" autocomplete="off" autofocus required />

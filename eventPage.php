@@ -137,7 +137,7 @@ body{
       <h3 class="form-signin-heading" style="margin-left:auto;margin-right:auto;text-align:center;">People who are going to this event</h3>
         <div class="row">
             <div class="col-lg-4 col-lg-offset-4">
-                <input type="search" id="search" value="" class="form-control" placeholder="Search">
+                <input type="search" id="search" value="" class="form-control" style="text-align:center" placeholder="Search">
             </div>
         </div>
         <div class="row">

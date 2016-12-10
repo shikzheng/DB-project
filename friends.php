@@ -45,9 +45,30 @@ body{
       </ul>
     </div>
   </nav>
-  <div class="row" style="width:100%;">
-    <div class="col-md-12">
-      <div style="width:1200px;height:auto;border:1px solid #e3e3e3;border-radius:4px;text-align:center;margin-left:auto;margin-right:auto;background-color:#FFFFFF;">
+  <div class="row">
+    <div class="col-md-12" style="text-align:center;margin-left:auto;margin-right:auto;margin-top:20px;">
+      <div style="width:450px;height:230px;border:1px solid #e3e3e3;border-radius:4px;text-align:center;background-color:#f5f5f5;margin-left:auto;margin-right:auto;">
+      <form class="form-signin" method="post" action="AddFriendProcessing.php" name="" style="width:80%;margin-left:auto;margin-right:auto;">
+          <h2 class="form-signin-heading">Add a friend</h2>
+          <label class="sr-only" for="addFriend_username">Username</label>
+          <input class="form-control" style = "height:45px;" placeholder="Username" id="addFriend_username" class="login_input" type="text" name="addFriend_username" autocomplete="off" autofocus required />
+          <br>
+          <br>
+          <button class="btn btn-lg btn-primary btn-block" type="submit"  name="login">Add Friend</button>
+      </form>
+      <div>
+        <?php
+          if(isset($_SESSION['AddFriendErrorMsg'])){
+            echo $_SESSION['AddFriendErrorMsg'];
+            unset($_SESSION['AddFriendErrorMsg']);
+          }
+        ?>
+      </div>
+    </div>
+    </div>
+    <div class="col-md-12" style="margin-top:40px;">
+    <div class="col-md-6">
+      <div style="border:1px solid #e3e3e3;border-radius:4px;margin-left:auto;margin-right:auto;background-color:#f5f5f5;">
         <h2 class="form-signin-heading">My friends</h2>
           <div class="row">
               <div class="col-lg-12">
@@ -66,13 +87,11 @@ body{
                   <hr>
               </div>
           </div>
+        </div>
   </div>
-  </div>
-</div>
-<br>
-<div class="row" style="width:100%;">
-  <div class="col-md-12">
-    <div style="width:1200px;height:auto;border:1px solid #e3e3e3;border-radius:4px;text-align:center;margin-left:auto;margin-right:auto;background-color:#FFFFFF;">
+
+  <div class="col-md-6">
+    <div style="border:1px solid #e3e3e3;border-radius:4px;margin-left:auto;margin-right:auto;background-color:#f5f5f5;">
         <h2 class="form-signin-heading" style="text-align:center;">Group events friends are attending in the next 3 days</h2>
         <div class="row">
             <div class="col-lg-4 col-lg-offset-4">
@@ -101,7 +120,10 @@ body{
         </div>
       </div>
     </div>
-  </div>
+    </div>
+</div>
+
+
   <a style="display:none;" id="current_user"><?php echo $_SESSION['user_name']; ?></a>
 </div>
 
