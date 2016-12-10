@@ -12,14 +12,15 @@ if (empty($_POST['user_name'])) {
         $_SESSION['loginErrorMsg'] = $connection->error;
     }
     if (!$connection->connect_errno) {
-        $user_name = $connection->real_escape_string($_POST['user_name']);
+        $user_name = $connection->real_escape_string(strip_tags($_POST['user_name'], ENT_QUOTES));
+        $user_password = $connection->real_escape_string(strip_tags($_POST['user_password'], ENT_QUOTES));
         $sql = "SELECT username, email, password, zipcode, firstname, lastname
                 FROM member
                 WHERE username = '" . $user_name . "';";
         $result_of_login_check = $connection->query($sql);
         if ($result_of_login_check->num_rows == 1){
             $result_row = $result_of_login_check->fetch_object();
-            if (password_verify($_POST['user_password'], $result_row->password)) {
+            if (password_verify($user_password, $result_row->password)) {
                 $_SESSION['user_name'] = $result_row->username;
                 $_SESSION['user_email'] = $result_row->email;
                 $_SESSION['user_firstname'] = $result_row->firstname;

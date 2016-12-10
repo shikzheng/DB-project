@@ -282,7 +282,12 @@ function signUp(){
            url: 'eventSignUpProcessing.php',
            data: { eventId: <?php echo $_SESSION['event_page_eventid']; ?>, uname: document.getElementById('current_user').innerHTML },
            success: function(response) {
+             console.log(response)
+             if(response == "Passed"){
+               document.getElementById('signUpMessage').innerHTML = "Sign up failed. Event has passed.";
+             }else{
              document.getElementById('signUpMessage').innerHTML = "You have signed up for this event.";
+           }
            }
        });
      }

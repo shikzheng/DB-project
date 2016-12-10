@@ -3,36 +3,47 @@ session_start();
 require_once("config/db.php");
 $_SESSION['user_login_status'] =
 
-$_SESSION["createEvent_Title"] = $_POST['createEvent_Title'];
-$_SESSION["createEvent_Description"] = $_POST['createEvent_Description'];
-$_SESSION["createEvent_StartTime"] = $_POST['createEvent_StartTime'];
-$_SESSION["createEvent_EndTime"] = $_POST['createEvent_EndTime'];
-$_SESSION["createEvent_Location_Name"] = $_POST['createEvent_Location_Name'];
-$_SESSION["createEvent_ZipCode"] = $_POST['createEvent_ZipCode'];
+$_SESSION["createEvent_Title"] = $connection->real_escape_string(strip_tags($_POST['createEvent_Title'], ENT_QUOTES));
+$_SESSION["createEvent_Description"] = $connection->real_escape_string(strip_tags($_POST['createEvent_Description'], ENT_QUOTES));
+$_SESSION["createEvent_StartTime"] = $connection->real_escape_string(strip_tags($_POST['createEvent_StartTime'], ENT_QUOTES));
+$_SESSION["createEvent_EndTime"] = $connection->real_escape_string(strip_tags($_POST['createEvent_EndTime'], ENT_QUOTES));
+$_SESSION["createEvent_Location_Name"] = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Name'], ENT_QUOTES));
+$_SESSION["createEvent_ZipCode"] = $connection->real_escape_string(strip_tags($_POST['createEvent_ZipCode'], ENT_QUOTES));
 
 
-$_SESSION["createEvent_Location_Address"] = $_POST['createEvent_Location_Address'];
-$_SESSION["createEvent_Location_Description"] = $_POST['createEvent_Location_Description'];
-$_SESSION["createEvent_Location_Latitude"] = $_POST['createEvent_Location_Latitude'];
-$_SESSION["createEvent_Location_Longitude"] = $_POST['createEvent_Location_Longitude'];
+$_SESSION["createEvent_Location_Address"] = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Address'], ENT_QUOTES));
+$_SESSION["createEvent_Location_Description"] = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Description'], ENT_QUOTES));
+$_SESSION["createEvent_Location_Latitude"] = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Latitude'], ENT_QUOTES));
+$_SESSION["createEvent_Location_Longitude"] = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Longitude'], ENT_QUOTES));
+
+
+$createEvent_Title = $connection->real_escape_string(strip_tags($_POST['createEvent_Title'], ENT_QUOTES));
+$createEvent_Description = $connection->real_escape_string(strip_tags($_POST['createEvent_Description'], ENT_QUOTES));
+$createEvent_StartTime = $connection->real_escape_string(strip_tags($_POST['createEvent_StartTime'], ENT_QUOTES));
+$createEvent_EndTime = $connection->real_escape_string(strip_tags($_POST['createEvent_EndTime'], ENT_QUOTES));
+$createEvent_Location_Name = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Name'], ENT_QUOTES));
+$createEvent_ZipCode = $connection->real_escape_string(strip_tags($_POST['createEvent_ZipCode'], ENT_QUOTES));
+
+$createEvent_Location_Address = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Address'], ENT_QUOTES));
+$createEvent_Location_Description = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Description'], ENT_QUOTES));
+$createEvent_Location_Latitude = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Latitude'], ENT_QUOTES));
+$createEvent_Location_Longitude = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Longitude'], ENT_QUOTES));
 
 
 
-
-
-  if(strlen($_POST['createEvent_Title'])>100){
+  if(strlen($createEvent_Title)>100){
       $_SESSION['createEventErrorMsg'] = "Title Name may not be more than 100 characters";
-    } elseif(strlen($_POST['createEvent_Location_Name'])>20){
+    } elseif(strlen($createEvent_Location_Name)>20){
       $_SESSION['createEventErrorMsg'] = "Location may not be more than 20 characters";
-    } elseif(strlen($_POST['createEvent_Location_Address'])>50){
+    } elseif(strlen($createEvent_Location_Address)>50){
       $_SESSION['createEventErrorMsg'] = "Location Address may not be more than 20 characters";
-    } elseif(strlen($_POST['createEvent_Location_Latitude'])>50){
+    } elseif(strlen($createEvent_Location_Latitude)>50){
       $_SESSION['createEventErrorMsg'] = "Location Latitude may not be more than 50 characters";
-    } elseif(strlen($_POST['createEvent_Location_Longitude'])>50){
+    } elseif(strlen($createEvent_Location_Longitude)>50){
       $_SESSION['createEventErrorMsg'] = "Location Longitude may not be more than 50 characters";
-    } elseif(strlen($_POST['createEvent_ZipCode']) != 5){
+    } elseif(strlen($createEvent_ZipCode) != 5){
       $_SESSION['createEventErrorMsg'] = "Zip code must be 5 digits";
-    } elseif(!ctype_digit($_POST['createEvent_ZipCode'])){
+    } elseif(!ctype_digit($createEvent_ZipCode)){
       $_SESSION['createEventErrorMsg'] = "Only intergers are allowed for zip code";
     }else{
         $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -40,19 +51,6 @@ $_SESSION["createEvent_Location_Longitude"] = $_POST['createEvent_Location_Longi
             $_SESSION['createEventErrorMsg'] = $connection->error;
         }
         if (!$connection->connect_errno) {
-            $createEvent_Title = $connection->real_escape_string(strip_tags($_POST['createEvent_Title'], ENT_QUOTES));
-            $createEvent_Description = $connection->real_escape_string(strip_tags($_POST['createEvent_Description'], ENT_QUOTES));
-            $createEvent_StartTime = $connection->real_escape_string(strip_tags($_POST['createEvent_StartTime'], ENT_QUOTES));
-            $createEvent_EndTime = $connection->real_escape_string(strip_tags($_POST['createEvent_EndTime'], ENT_QUOTES));
-            $createEvent_Location_Name = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Name'], ENT_QUOTES));
-            $createEvent_ZipCode = $connection->real_escape_string(strip_tags($_POST['createEvent_ZipCode'], ENT_QUOTES));
-
-            $createEvent_Location_Address = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Address'], ENT_QUOTES));
-            $createEvent_Location_Description = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Description'], ENT_QUOTES));
-            $createEvent_Location_Latitude = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Latitude'], ENT_QUOTES));
-            $createEvent_Location_Longitude = $connection->real_escape_string(strip_tags($_POST['createEvent_Location_Longitude'], ENT_QUOTES));
-
-
             $sql1 = "SELECT * FROM location WHERE location_name = '" . $createEvent_Location_Name . "' AND zipcode = '" . $createEvent_ZipCode . "';";
             $query_check_if_location_exist = $connection->query($sql1);
             if ($query_check_if_location_exist->num_rows == 0) {

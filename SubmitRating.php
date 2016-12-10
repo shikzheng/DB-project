@@ -1,11 +1,11 @@
 <?php
 session_start();
-echo $_POST['event_rating'];
 require_once("config/db.php");
 $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
-$rating = $_POST['event_rating'];
-$username = $_POST['rating_username'];
+$rating = $connection->real_escape_string(strip_tags($_POST['event_rating'], ENT_QUOTES));
+$username = $connection->real_escape_string(strip_tags($_POST['rating_username'], ENT_QUOTES));
+
 
 if (!$connection->connect_errno) {
   $sql = "UPDATE sign_up SET rating = '" .  $rating . "' WHERE event_id = '" .  $_SESSION['event_page_eventid'] . "' AND username = '" .  $username . "';";

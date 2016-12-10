@@ -484,7 +484,6 @@ function authorizeProcessSubmitClick(){
       url: 'AuthorizeProcessing.php',
       data: { authorizedArr:authorizedArr, members:members, thisGroup:thisGroup },
       success: function(response) {
-        console.log(response)
         document.getElementById('AuthorizeProcessMessage').innerHTML = "Authorization Updated.";
       }
   });

@@ -2,7 +2,8 @@
     session_start();
     require_once("config/db.php");
     $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-    $current_user = $_POST['currUser'];
+    $current_user = $connection->real_escape_string(strip_tags($_POST['currUser'], ENT_QUOTES));
+
     $firstName = array();
     $lastName = array();
     $email = array();

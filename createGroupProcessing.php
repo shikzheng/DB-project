@@ -1,18 +1,24 @@
 <?php
 session_start();
 require_once("config/db.php");
-$_SESSION["creategroup_GroupName"] = $_POST['creategroup_GroupName'];
-$_SESSION["creategroup_Description"] = $_POST['creategroup_Description'];
-$_SESSION["creategroup_Category"] = $_POST['creategroup_Category'];
-$_SESSION["creategroup_Keywords"] = $_POST['creategroup_Keywords'];
+$_SESSION["creategroup_GroupName"] = $connection->real_escape_string(strip_tags($_POST['creategroup_GroupName'], ENT_QUOTES));
+$_SESSION["creategroup_Description"] = $connection->real_escape_string(strip_tags($_POST['creategroup_Description'], ENT_QUOTES));
+$_SESSION["creategroup_Category"] = $connection->real_escape_string(strip_tags($_POST['creategroup_Category'], ENT_QUOTES));
+$_SESSION["creategroup_Keywords"] = $connection->real_escape_string(strip_tags($_POST['creategroup_Keywords'], ENT_QUOTES));
 
-    if (empty($_POST['creategroup_GroupName'])) {
+$creategroup_GroupName = $connection->real_escape_string(strip_tags($_POST['creategroup_GroupName'], ENT_QUOTES));
+$creategroup_Description = $connection->real_escape_string(strip_tags($_POST['creategroup_Description'], ENT_QUOTES));
+$group_creator = $connection->real_escape_string(strip_tags($_SESSION['user_name'], ENT_QUOTES));
+$category = $connection->real_escape_string(strip_tags($_POST['creategroup_Category'], ENT_QUOTES));
+$keyword = $connection->real_escape_string(strip_tags($_POST['creategroup_Keywords'], ENT_QUOTES));
+
+    if (empty($creategroup_GroupName)) {
         $_SESSION['createGroupErrorMsg'] = "Empty Group Name";
-    } elseif(strlen($_POST['creategroup_GroupName'])>20){
+    } elseif(strlen($creategroup_GroupName)>20){
       $_SESSION['createGroupErrorMsg'] = "Group Name may not be more than 20 characters";
-    } elseif(strlen($_POST['creategroup_Category'])>20){
+    } elseif(strlen($category)>20){
       $_SESSION['createGroupErrorMsg'] = "Category may not be more than 20 characters";
-    } elseif(strlen($_POST['creategroup_Keywords'])>50){
+    } elseif(strlen($keyword)>50){
       $_SESSION['createGroupErrorMsg'] = "Keywords may not be more than 50 characters";
     } else{
         $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -20,11 +26,6 @@ $_SESSION["creategroup_Keywords"] = $_POST['creategroup_Keywords'];
             $_SESSION['createGroupErrorMsg'] = $connection->error;
         }
         if (!$connection->connect_errno) {
-            $creategroup_GroupName = $connection->real_escape_string(strip_tags($_POST['creategroup_GroupName'], ENT_QUOTES));
-            $creategroup_Description = $connection->real_escape_string(strip_tags($_POST['creategroup_Description'], ENT_QUOTES));
-            $group_creator = $connection->real_escape_string(strip_tags($_SESSION['user_name'], ENT_QUOTES));
-            $category = $connection->real_escape_string(strip_tags($_POST['creategroup_Category'], ENT_QUOTES));
-            $keyword = $connection->real_escape_string(strip_tags($_POST['creategroup_Keywords'], ENT_QUOTES));
 
             $sql = "SELECT * FROM a_group WHERE group_name = '" . $creategroup_GroupName . "';";
             $query_check_group_name = $connection->query($sql);

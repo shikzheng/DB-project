@@ -2,10 +2,11 @@
 session_start();
 require_once("config/db.php");
 
+$addFriend_username = $connection->real_escape_string(strip_tags($_POST['addFriend_username'], ENT_QUOTES));
 
-    if (empty($_POST['addFriend_username'])) {
+    if (empty($addFriend_username)) {
         $_SESSION['createGroupErrorMsg'] = "Empty Group Name";
-    } elseif(strlen($_POST['addFriend_username'])>20){
+    } elseif(strlen($addFriend_username)>20){
       $_SESSION['AddFriendErrorMsg'] = "Username may not be more than 20 characters";
     } else{
         $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -14,7 +15,6 @@ require_once("config/db.php");
         }
         if (!$connection->connect_errno) {
           $user = $connection->real_escape_string(strip_tags($_SESSION['user_name'], ENT_QUOTES));
-          $addFriend_username = $connection->real_escape_string(strip_tags($_POST['addFriend_username'], ENT_QUOTES));
           $sql1 = "SELECT username FROM member WHERE username = '" . $addFriend_username . "';";
           $result = $connection->query($sql1);
           if($result->num_rows < 1){

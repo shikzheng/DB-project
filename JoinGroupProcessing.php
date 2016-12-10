@@ -4,10 +4,11 @@ require_once("config/db.php");
 //$_SESSION["creategroup_GroupName"] = $_POST['creategroup_GroupName'];
 //$_SESSION["creategroup_Description"] = $_POST['creategroup_Description'];
 
+$joingroup_GroupName = $connection->real_escape_string(strip_tags($_POST['joingroup_GroupName'], ENT_QUOTES));
 
-    if (empty($_POST['joingroup_GroupName'])) {
+    if (empty($joingroup_GroupName)) {
         $_SESSION['createGroupErrorMsg'] = "Empty Group Name";
-    } elseif(strlen($_POST['joingroup_GroupName'])>20){
+    } elseif(strlen($joingroup_GroupName)>20){
       $_SESSION['JoinGroupErrorMsg'] = "Group Name may not be more than 20 characters";
     } else{
         $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -16,7 +17,6 @@ require_once("config/db.php");
         }
         if (!$connection->connect_errno) {
           $user = $connection->real_escape_string(strip_tags($_SESSION['user_name'], ENT_QUOTES));
-          $joingroup_GroupName = $connection->real_escape_string(strip_tags($_POST['joingroup_GroupName'], ENT_QUOTES));
           $sql1 = "SELECT group_id FROM a_group WHERE group_name = '" . $joingroup_GroupName . "';";
           $result = $connection->query($sql1);
           if($result->num_rows < 1){
