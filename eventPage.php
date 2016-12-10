@@ -67,6 +67,9 @@ if (!$connection->connect_errno) {
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <style>
+body{
+  background-color:#F3EFE0;
+}
 .glyphicon {
     font-size: 20px;
 }
@@ -86,7 +89,7 @@ if (!$connection->connect_errno) {
       </div>
       <ul class="nav navbar-nav">
         <li><a style="color:white;background-color:#00BFFF;" href="main.php">Home</a></li>
-        <li><a style="color:white;background-color:#00BFFF;" href="#">Friends</a></li>
+        <li><a style="color:white;background-color:#00BFFF;" href="friends.php">Friends</a></li>
         <li><a style="color:white;background-color:#00BFFF;" href="#">Interests</a></li>
         <li><a style="color:white;background-color:#00BFFF;" href="group.php">Groups</a></li>
       </ul>
@@ -96,7 +99,7 @@ if (!$connection->connect_errno) {
       </ul>
     </div>
   </nav>
-<div class="panel panel-info" style="margin-top:-20px;">
+<div class="panel panel-info" style="margin-top:20px;">
   <div class=panel-heading style = "text-align:center;">
     <h2 class=form-signin-heading><?php echo $groupName[0];?>'s Event: <?php echo $title[0];?></h2>
   </div>

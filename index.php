@@ -17,12 +17,13 @@ require_once("config/db.php");
 </head>
 <style>
 body{
-  background-color:#87CEFA;
+  background-color:#F3EFE0;
 }
 </style>
 <body>
-<div style="margin-left:auto;margin-right:auto;text-align:center;margin-top:40px;">
-  <img src="images/logo.png" style="width:300px;">
+<div style="width:100%;background-color:#87CEFA;">
+<div style="margin-left:auto;margin-right:auto;text-align:center;">
+  <img src="images/logo.png" style="width:300px;margin-top:20px;">
 </div>
 <div class="container" style = "width:350px;margin-top:40px;">
 <form class="form-signin" method="post" action="loginProcessing.php" name="loginform">
@@ -39,16 +40,17 @@ body{
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit"  name="login">Log in</button>
 </form>
-<a href="register.php">Register new account</a>
+<a href="register.php" style="color:black;">Register new account</a>
 <br>
 <br>
-<div id = "message">
+<div id = "message" style="color:black;">
   <?php
     if(isset($_SESSION['loginErrorMsg'])){
       echo $_SESSION['loginErrorMsg'];
       unset($_SESSION['loginErrorMsg']);
     }
   ?>
+</div>
 </div>
 </div>
 <div class="row" style="width:100%;margin-top:60px;">

@@ -23,6 +23,9 @@ if(!isset($_SESSION['user_login_status'])){
     text-decoration: none;
     background-color: blue;
 }
+body{
+  background-color:#F3EFE0;
+}
 </style>
 <body>
   <nav class="navbar" style="background-color:#00BFFF;">
@@ -32,7 +35,7 @@ if(!isset($_SESSION['user_login_status'])){
       </div>
       <ul class="nav navbar-nav">
         <li><a style="color:white;background-color:#00BFFF;" href="main.php">Home</a></li>
-        <li><a style="color:white;background-color:#00BFFF;" href="#">Friends</a></li>
+        <li><a style="color:white;background-color:#00BFFF;" href="friends.php">Friends</a></li>
         <li><a style="color:white;background-color:#00BFFF;" href="#">Interests</a></li>
         <li><a style="color:yellow;background-color:#00BFFF;" href="#">Groups</a></li>
       </ul>
