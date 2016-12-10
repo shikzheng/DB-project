@@ -20,6 +20,9 @@ $addFriend_username = $connection->real_escape_string(strip_tags($_POST['addFrie
           if($result->num_rows < 1){
             $_SESSION['AddFriendErrorMsg'] = "Error. This user does not exist";
             header("Location:friends.php");
+          }else if($addFriend_username == $user){
+            $_SESSION['AddFriendErrorMsg'] = "Error. You cannot add yourself";
+            header("Location:friends.php");
           }else{
             $sql = "SELECT * FROM friend WHERE friend_of = '" . $user . "' AND friend_to = '" . $addFriend_username . "';";
             $check1 = $connection->query($sql);
