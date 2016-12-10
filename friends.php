@@ -75,6 +75,7 @@ body{
                   <table class="table table-striped" id="table">
                       <thead>
                           <tr>
+                              <th>Username</th>
                               <th>First Name</th>
                               <th>Last Name</th>
                               <th>Email</th>
@@ -165,12 +166,18 @@ $(document).ready(function(){
             var newCell1  = newRow.insertCell(0);
             var newCell2  = newRow.insertCell(1);
             var newCell3  = newRow.insertCell(2);
-            var newText1  = document.createTextNode(firstNameArr[i]);
-            var newText2  = document.createTextNode(lastNameArr[i]);
-            var newText3  = document.createTextNode(emailArr[i]);
+            var newCell4  = newRow.insertCell(3);
+
+            var newText1  = document.createTextNode(usernameArr[i]);
+            var newText2  = document.createTextNode(firstNameArr[i]);
+            var newText3  = document.createTextNode(lastNameArr[i]);
+            var newText4  = document.createTextNode(emailArr[i]);
+
             newCell1.appendChild(newText1);
             newCell2.appendChild(newText2);
             newCell3.appendChild(newText3);
+            newCell4.appendChild(newText4);
+
           }
 
           /*--------------------------*/
