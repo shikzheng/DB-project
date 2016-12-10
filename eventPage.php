@@ -142,7 +142,7 @@ body{
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <table class="table" id="table">
+                <table class="table table-striped" id="table">
                     <thead>
                         <tr>
                             <th>First Name</th>
@@ -201,23 +201,8 @@ if(dateNow < EventEndDateTime){
 
   $(function () {
     $( '#table' ).searchable({
-        striped: true,
-        oddRow: { 'background-color': '#f5f5f5' },
-        evenRow: { 'background-color': '#fff' },
         searchType: 'default'
     });
-
-    $( '#searchable-container' ).searchable({
-        searchField: '#container-search',
-        selector: '.row',
-        childSelector: '.col-xs-4',
-        show: function( elem ) {
-            elem.slideDown(100);
-        },
-        hide: function( elem ) {
-            elem.slideUp( 100 );
-        }
-    })
 });
 
 
