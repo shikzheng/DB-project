@@ -96,7 +96,7 @@ body{
         <h2 class="form-signin-heading" style="text-align:center;">Group events friends are attending in the next 3 days</h2>
         <div class="row">
             <div class="col-lg-4 col-lg-offset-4">
-              <input type="search" id="searchEvent" value="" class="form-control" style="text-align:center;" placeholder="Search Group Events">
+              <input type="search" id="search" class="form-control" style="text-align:center;" placeholder="Search Group Events">
             </div>
         </div>
         <div class="row">
@@ -131,6 +131,7 @@ body{
 <script src="//rawgithub.com/stidges/jquery-searchable/master/dist/jquery.searchable-1.0.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+
   var tableRef = document.getElementById('table').getElementsByTagName('tbody')[0];
 
 
@@ -260,6 +261,20 @@ $(document).ready(function(){
 
               }
           });
+
+           $(document).ajaxStop(function () {
+             $(function () {
+               $( '#EventTable' ).searchable({
+                   searchType: 'default'
+               });
+           });
+           });
+
+
+
+
+
+
       }
   });
 });
