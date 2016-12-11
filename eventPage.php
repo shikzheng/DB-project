@@ -130,8 +130,42 @@ body{
    <br>
  </div>
 </div>
-<div class="row" style="width:100%;">
+<div style = "overflow-y: hidden; overflow-x: scroll; width:95%;white-space: nowrap;height:385px;margin-left:auto;margin-right:auto;border:3px solid #000000;" >
+<?php
+  $select_image="SELECT * FROM photo WHERE p_id IN (SELECT p_id FROM photo_of WHERE event_id='" . $eventid . "');";
+  $var = $connection->query($select_image);
+  while($row=$var->fetch_assoc()){
+    echo '<span style="width:500px;display:inline-block;"><a class="thumbnail" style ="text-decoration:none"><img class="img-responsive" style="height:300px;" src = "data:image/jpg;base64,' . base64_encode($row['image']) . '" alt="No Image">';
+    echo '<div> Title = ' . $row['name'] . '</div><div style="text-decoration:none"> Caption: ' . $row['caption'] . '</div></a></span>';
+  }
 
+?>
+</div>
+
+<div class="row" style="width:100%;">
+  <div class="col-md-12" style="margin-bottom:50px;">
+  <form name="frmImage" style = "width:500px;margin-left:auto;margin-right:auto;margin-top:20px;" enctype="multipart/form-data" action="imageProcessing.php" method="post">
+  <label>Upload An Image:</label><br/>
+    <label class="sr-only" for="photo_name">Photo Name</label>
+    <input class="form-control" style = "height:45px;" placeholder="Photo Name" id="photo_name" class="login_input" type="text" name="photo_name"  required autofocus autocomplete="off" />
+    <br>
+    <label class="sr-only" for="photo_name">Caption</label>
+    <input class="form-control" style = "height:45px;" placeholder="Photo Caption" id="photo_caption" class="login_input" type="text" name="photo_caption"  required autofocus autocomplete="off" />
+    <br>
+    <input name="userImage" type="file" class="inputFile" required/>
+    <br>
+    <input name="eventid" type="hidden" class="inputFile" value="<?php echo $eventid;?>"/>
+  <input class="btn btn-primary btn-block" type="submit" value="Upload" class="btnSubmit" />
+  </form>
+  <div id="uploadErrorMsg" style="width:300px;margin-left:auto;margin-right:auto;font-size:16px;text-align:center;font-weight:bold;">
+    <?php
+      if(isset($_SESSION['uploadErrorMsg'])){
+        echo $_SESSION['uploadErrorMsg'];
+        unset($_SESSION['uploadErrorMsg']);
+      }
+    ?>
+  </div>
+  </div>
   <div class="col-md-6" style="border:1px solid #e3e3e3;border-radius:4px;">
 
       <h3 class="form-signin-heading" style="margin-left:auto;margin-right:auto;text-align:center;">People who are going to this event</h3>
@@ -159,6 +193,9 @@ body{
         </div>
 
 </div>
+
+
+
   <div class="col-md-6" >
     <div id="ratingErrorMsg" style="width:300px;margin-left:auto;margin-right:auto;font-size:16px;text-align:center;font-weight:bold;">
       <?php
@@ -175,10 +212,6 @@ body{
       <button class="btn btn-primary btn-block" style = "width:150px;height:40px;;text-align:center;margin-left:auto;margin-right:auto;" type="submit" id="submitRatingButton" name="login">Submit Rating</button>
     </form>
   </div>
-
-
-
-
 </div>
 <a style="display:none;" id="current_user"><?php echo $_SESSION['user_name']; ?></a>
 <a style="display:none;" id="event_end_time"><?php echo $endTime[0]; ?></a>
