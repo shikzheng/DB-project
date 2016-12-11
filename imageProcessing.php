@@ -21,6 +21,7 @@ $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         $photo_name = $_POST['photo_name'];
         $photo_caption = $_POST['photo_caption'];
         $eventid = $_POST['eventid'];
+        $username = $_POST['username'];
 
         $file_formats = array('.jpg','.png','.jpeg','.gif');
 
@@ -28,8 +29,8 @@ $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
           $_SESSION['uploadErrorMsg'] = "Error: Not an Image.";
         }
         else{
-          $sql = "INSERT INTO photo(image,caption,name,image_name)
-          VALUES('" . $imgData . "', '" . $photo_caption . "', '" . $photo_name . "', '" . $imagename . "')";
+          $sql = "INSERT INTO photo(image,caption,name,image_name,username)
+          VALUES('" . $imgData . "', '" . $photo_caption . "', '" . $photo_name . "', '" . $imagename . "', '" . $username . "')";
           $result = $connection->query($sql);
           $id = $connection->insert_id;
           $sql2 = "INSERT INTO photo_of(p_id,event_id)

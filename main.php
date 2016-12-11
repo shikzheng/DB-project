@@ -3,6 +3,9 @@ session_start();
 if(!isset($_SESSION['user_login_status'])){
   header("Location: index.php");
 }
+
+require_once("config/db.php");
+$connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 ?>
 <html>
 <head>
@@ -78,6 +81,20 @@ body{
         </div>
       </div>
     </div>
+  <div style="margin-top:2%;text-algin:center;">
+    <h2 class="form-signin-heading" style="text-align:center;">Your Images</h2>
+    <div style = "overflow-y: hidden; overflow-x: scroll; width:95%;white-space: nowrap;height:400px;margin-left:auto;margin-right:auto;border:3px solid #000000;" >
+    <?php
+      $select_image="SELECT * FROM photo NATURAL JOIN photo_of NATURAL JOIN an_event WHERE p_id IN (SELECT p_id FROM photo WHERE username ='" . $_SESSION['user_name'] . "');";
+      $var = $connection->query($select_image);
+      while($row=$var->fetch_assoc()){
+        echo '<span style="width:500px;display:inline-block;"><a class="thumbnail" data-toggle="tooltip" data-placement="top" title="Click me to go to Event Page of this Image!" href="eventPage.php?event_page_eventid=' . $row['event_ID'] . '" style ="text-decoration:none"><img class="img-responsive" style="height:300px;" src = "data:image/jpg;base64,' . base64_encode($row['image']) . '" alt="No Image">';
+        echo '<div> Event: ' . $row['title'] . '</div><div> Title: ' . $row['name'] . '</div><div style="text-decoration:none"> Caption: ' . $row['caption'] . '</div></a></span>';
+      }
+
+    ?>
+    </div>
+  </div>
 
 
     <a style="display:none;" id="current_user"><?php echo $_SESSION['user_name']; ?></a>

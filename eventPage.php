@@ -155,6 +155,7 @@ body{
     <input name="userImage" type="file" class="inputFile" required/>
     <br>
     <input name="eventid" type="hidden" class="inputFile" value="<?php echo $eventid;?>"/>
+    <input name="username" type="hidden" class="inputFile" value="<?php echo $_SESSION['user_name'];?>">
   <input class="btn btn-primary btn-block" type="submit" value="Upload" class="btnSubmit" />
   </form>
   <div id="uploadErrorMsg" style="width:300px;margin-left:auto;margin-right:auto;font-size:16px;text-align:center;font-weight:bold;">
