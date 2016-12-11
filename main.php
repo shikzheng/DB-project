@@ -174,7 +174,7 @@ $(document).ready(function(){
   });
 });
 function SelectedEvent(eventid){
-window.location.href = "http://localhost/Findfolks/eventPage.php?event_page_eventid="+eventid;
+window.location.href = "eventPage.php?event_page_eventid="+eventid;
 }
 </script>
 </body>
