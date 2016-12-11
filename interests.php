@@ -112,7 +112,7 @@ body{
   </div>
 
 
-  <div style="width:1200px;height:auto;border:1px solid #e3e3e3;border-radius:4px;text-align:center;background-color:#FFFFFF;">
+  <div style="width:1200px;height:auto;border:1px solid #e3e3e3;border-radius:4px;text-align:center;background-color:#FFFFFF;margin-top:30px;">
   <div class="container">
     <h2 class="form-signin-heading">All Interests</h2>
       <div class="row">
@@ -229,7 +229,7 @@ $.ajax({
             success: function(response) {
               console.log(categoryArr)
               console.log(keywordArr)
-              
+
               console.log(response)
               var tableRef2 = document.getElementById('EventTable').getElementsByTagName('tbody')[0];
 
@@ -277,8 +277,14 @@ $.ajax({
               for(i = 0; i<(eventZipCode.replace(/[^,]/g, "").length+1); i++){
                   eventZipCodeArr[i] = eventZipCode.split(',')[i].replace("[",'').replace(/['"]+/g, '').replace("]",'').replace(/['\\/]+/g, '/');
                 }
-
-                for(var i = 0; i < eventIdArr.length; i++){
+                var length = 0;
+                if(eventIdArr[0]==""){
+                  length = 0;
+                }else{
+                  length = eventIdArr.length;
+                }
+                console.log(length)
+                for(var i = 0; i < length; i++){
                   var newRow   = tableRef2.insertRow(tableRef2.rows.length);
                   newRow.setAttribute( "onClick", "SelectedEvent(" + eventIdArr[i] + ")");
                   var newCell1  = newRow.insertCell(0);

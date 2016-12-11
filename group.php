@@ -62,9 +62,9 @@ body{
           <input class="form-control" value = "<?php if((isset($_SESSION["creategroup_Category"]) && (isset($_SESSION["createGroupErrorMsg"])) && ($_SESSION['createGroupErrorMsg'] != "Success! The group has been created."))){ echo $_SESSION["creategroup_Category"];} ?>"
            style = "height:45px;" placeholder="Category" id="creategroup_Category" class="login_input" type="text" name="creategroup_Category" autocomplete="off" autofocus required />
           <br>
-          <label class="sr-only" for="creategroup_Keywords">Keywords</label>
+          <label class="sr-only" for="creategroup_Keywords">Keyword</label>
           <input class="form-control" value = "<?php if((isset($_SESSION["creategroup_Keywords"])&& (isset($_SESSION["createGroupErrorMsg"]))  && ($_SESSION['createGroupErrorMsg'] != "Success! The group has been created."))){ echo $_SESSION["creategroup_Keywords"];} ?>"
-           style = "height:45px;" placeholder="Keywords (Please separate each keyword with a comma)" id="creategroup_Keywords" class="login_input" type="text" name="creategroup_Keywords" autocomplete="off" autofocus required />
+           style = "height:45px;" placeholder="Keyword" id="creategroup_Keywords" class="login_input" type="text" name="creategroup_Keywords" autocomplete="off" autofocus required />
           <br>
           <br>
           <button class="btn btn-lg btn-primary btn-block" type="submit"  name="login">Create Group</button>

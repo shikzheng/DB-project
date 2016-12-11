@@ -43,6 +43,8 @@ $createEvent_Location_Longitude = $connection->real_escape_string(strip_tags($_P
       $_SESSION['createEventErrorMsg'] = "Location Longitude may not be more than 50 characters";
     } elseif(strlen($createEvent_ZipCode) != 5){
       $_SESSION['createEventErrorMsg'] = "Zip code must be 5 digits";
+    }elseif($createEvent_StartTime > $createEvent_EndTime){
+      $_SESSION['createEventErrorMsg'] = "End time must be greater than start time.";
     } elseif(!ctype_digit($createEvent_ZipCode)){
       $_SESSION['createEventErrorMsg'] = "Only intergers are allowed for zip code";
     }else{

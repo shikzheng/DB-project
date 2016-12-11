@@ -90,7 +90,7 @@ body{
       <ul class="nav navbar-nav">
         <li><a style="color:white;background-color:#00BFFF;" href="main.php">Home</a></li>
         <li><a style="color:white;background-color:#00BFFF;" href="friends.php">Friends</a></li>
-        <li><a style="color:white;background-color:#00BFFF;" href="#">Interests</a></li>
+        <li><a style="color:white;background-color:#00BFFF;" href="interests.php">Interests</a></li>
         <li><a style="color:white;background-color:#00BFFF;" href="group.php">Groups</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -136,7 +136,7 @@ body{
   $var = $connection->query($select_image);
   while($row=$var->fetch_assoc()){
     echo '<span style="width:500px;display:inline-block;"><a class="thumbnail" style ="text-decoration:none"><img class="img-responsive" style="height:300px;" src = "data:image/jpg;base64,' . base64_encode($row['image']) . '" alt="No Image">';
-    echo '<div> Title = ' . $row['name'] . '</div><div style="text-decoration:none"> Caption: ' . $row['caption'] . '</div></a></span>';
+    echo '<div> Title: ' . $row['name'] . '</div><div style="text-decoration:none"> Caption: ' . $row['caption'] . '</div></a></span>';
   }
 
 ?>
@@ -220,6 +220,7 @@ body{
 <script src="javascripts/bootstrap-rating-input.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+$(this).scrollTop(0);
 document.getElementById('rating_username').value = document.getElementById('current_user').innerHTML;
 
 var EventEndDateTime = new Date(document.getElementById('event_end_time').innerHTML);

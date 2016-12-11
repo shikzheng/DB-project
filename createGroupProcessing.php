@@ -20,9 +20,11 @@ $keyword = $connection->real_escape_string(strip_tags($_POST['creategroup_Keywor
       $_SESSION['createGroupErrorMsg'] = "Group Name may not be more than 20 characters";
     } elseif(strlen($category)>20){
       $_SESSION['createGroupErrorMsg'] = "Category may not be more than 20 characters";
-    } elseif(strlen($keyword)>50){
-      $_SESSION['createGroupErrorMsg'] = "Keywords may not be more than 50 characters";
-    } else{
+    } elseif(strlen($keyword)>20){
+      $_SESSION['createGroupErrorMsg'] = "Keyword may not be more than 20 characters";
+    } elseif(!ctype_alpha($keyword)){
+      $_SESSION['createGroupErrorMsg'] = "Keyword may only contain alphabet letters.";
+    }else{
         $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         if (!$connection->set_charset("utf8")) {
             $_SESSION['createGroupErrorMsg'] = $connection->error;

@@ -70,7 +70,7 @@ body{
       <ul class="nav navbar-nav">
         <li><a style="color:white;background-color:#00BFFF;" href="main.php">Home</a></li>
         <li><a style="color:white;background-color:#00BFFF;" href="friends.php">Friends</a></li>
-        <li><a style="color:white;background-color:#00BFFF;" href="#">Interests</a></li>
+        <li><a style="color:white;background-color:#00BFFF;" href="interests.php">Interests</a></li>
         <li><a style="color:white;background-color:#00BFFF;" href="group.php">Groups</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
