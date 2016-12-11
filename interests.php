@@ -308,13 +308,6 @@ $(document).ready(function(){
 
 /*---------------------------------------*/
 
-var tableRef2 = document.getElementById('EventTable').getElementsByTagName('tbody')[0];
-var eventTitle = [];
-var eventDescription = [];
-var eventStart = [];
-var eventEnd = [];
-var eventLocationName = [];
-var eventZipCode = [];
 
 $.ajax({
     type: 'POST',

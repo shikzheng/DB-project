@@ -14,7 +14,7 @@
 
     if (!$connection->connect_errno) {
 
-      $sql = "SELECT * FROM an_event WHERE start_time < NOW() + INTERVAL 3 DAY AND start_time >= NOW() AND event_id NOT IN (select event_id from sign_up NATURAL JOIN an_event where username = '" . $username . "');";
+      $sql = "SELECT * FROM an_event WHERE start_time < NOW() + INTERVAL 3 DAY AND end_time >= NOW() AND event_id NOT IN (select event_id from sign_up NATURAL JOIN an_event where username = '" . $username . "');";
       $query= $connection->query($sql);
       while($row = $query->fetch_assoc()){
         array_push($eventId, $row['event_id']);

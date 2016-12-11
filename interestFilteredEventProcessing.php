@@ -13,7 +13,7 @@
       $eventLocationName = array();
       $eventZipCode = array();
       for($i = 0; $i<count($categoryArr);$i++){
-      $sql = "SELECT * FROM an_event NATURAL JOIN organize NATURAL JOIN about WHERE start_time < NOW() + INTERVAL 3 DAY AND start_time >= NOW() AND category = '" . $categoryArr[$i] . "' AND keyword = '" . $keywordArr[$i] . "';";
+      $sql = "SELECT * FROM an_event NATURAL JOIN organize NATURAL JOIN about WHERE start_time < NOW() + INTERVAL 3 DAY AND end_time >= NOW() AND category = '" . $categoryArr[$i] . "' AND keyword = '" . $keywordArr[$i] . "';";
       $query= $connection->query($sql);
       while($row = $query->fetch_assoc()){
         array_push($eventId, $row['event_id']);

@@ -64,7 +64,7 @@ body{
   <div class="row">
     <div class="col-md-12">
       <div style="border:1px solid #e3e3e3;border-radius:4px;margin-left:auto;margin-right:auto;background-color:#f5f5f5;">
-          <h2 class="form-signin-heading" style="text-align:center;">Group events you've signed up for in the next 3 days</h2>
+          <h2 class="form-signin-heading" style="text-align:center;">Events you've signed up for in the next 3 days</h2>
           <div class="row">
               <div class="col-lg-4 col-lg-offset-4">
                 <input type="search" id="search" value="" class="form-control" style="text-align:center;" placeholder="Search Group Events">
@@ -93,7 +93,7 @@ body{
         </div>
 
         <div style="border:1px solid #e3e3e3;border-radius:4px;margin-left:auto;margin-right:auto;background-color:#f5f5f5;margin-top:20px;">
-            <h2 class="form-signin-heading" style="text-align:center;">Group events you've not signed up for in the next 3 days</h2>
+            <h2 class="form-signin-heading" style="text-align:center;">Events you've not signed up for in the next 3 days</h2>
             <div class="row">
                 <div class="col-lg-4 col-lg-offset-4">
                   <input type="search" id="searchNot" value="" class="form-control" style="text-align:center;" placeholder="Search Group Events">
@@ -124,7 +124,7 @@ body{
 
     <div style="margin-top:2%;text-algin:center;margin-bottom:30px;">
      <h2 class="form-signin-heading" style="text-align:center;">Your Images</h2>
-       <div style = "overflow-y: hidden; overflow-x: scroll; width:95%;white-space: nowrap;height:400px;margin-left:auto;margin-right:auto;border:3px solid #000000;" >
+       <div style = "overflow-y: hidden; overflow-x: scroll; width:95%;background-color:#f5f5f5;white-space: nowrap;height:400px;margin-left:auto;margin-right:auto;border:3px solid #000000;" >
       <?php
          $select_image="SELECT * FROM photo NATURAL JOIN photo_of NATURAL JOIN an_event WHERE p_id IN (SELECT p_id FROM photo WHERE username ='" . $_SESSION['user_name'] . "');";
          $var = $connection->query($select_image);
