@@ -3,12 +3,6 @@ session_start();
 if(!isset($_SESSION['user_login_status'])){
   header("Location: index.php");
 }
-if (isset($_GET['group_page_category'])){
-    $_SESSION['group_page_category'] = $_GET['group_page_category'];
-}
-if (isset($_GET['group_page_keyword'])){
-    $_SESSION['group_page_keyword'] = $_GET['group_page_keyword'];
-}
 ?>
 <html>
 <head>
@@ -17,8 +11,22 @@ if (isset($_GET['group_page_keyword'])){
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="pace.js"></script>
+  <link href="pace-theme-loading-bar.css" rel="stylesheet" />
 </head>
 <style>
+body > :not(.pace),body:before,body:after {
+  -webkit-transition:opacity .4s ease-in-out;
+  -moz-transition:opacity .4s ease-in-out;
+  -o-transition:opacity .4s ease-in-out;
+  -ms-transition:opacity .4s ease-in-out;
+  transition:opacity .4s ease-in-out
+}
+
+body:not(.pace-done) > :not(.pace),body:not(.pace-done):before,body:not(.pace-done):after {
+  opacity:0
+}
+
 .glyphicon {
     font-size: 20px;
 }
@@ -78,7 +86,34 @@ body{
           }
         ?>
       </div>
-      <br>
+
+      <div style="height:auto;border:1px solid #e3e3e3;border-radius:4px;text-align:center;background-color:#FFFFFF;margin-top:10px;">
+        <h2 class="form-signin-heading">My Interest</h2>
+        <div class="row">
+            <div class="col-lg-4 col-lg-offset-4">
+                <input type="search" id="myInterestSearch" value="" class="form-control" placeholder="Search">
+            </div>
+        </div>
+          <div class="row">
+              <div class="col-lg-12">
+                  <table class="table table-striped" id="myInterestTable">
+                      <thead>
+                          <tr>
+                              <th>Category</th>
+                              <th>Keyword</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+
+                      </tbody>
+                  </table>
+                  <hr>
+              </div>
+          </div>
+    </div>
+
+
+
     </div>
     </div>
 
@@ -86,9 +121,36 @@ body{
 
 
     <div class="col-md-4">
-      <div style="width:1200px;height:auto;border:1px solid #e3e3e3;border-radius:4px;text-align:center;background-color:#FFFFFF;">
+      <div style="width:1200px;height:auto;border:1px solid #e3e3e3;border-radius:4px;text-align:center;background-color:#FFFFFF;margin-top:30px;">
       <div class="container">
-        <h2 class="form-signin-heading">Events from groups with similar interest within 3 days</h2>
+        <h2 class="form-signin-heading">Groups with similar interests</h2>
+        <div class="row">
+            <div class="col-lg-4 col-lg-offset-4">
+                <input type="search" id="selectedInterestSearch" value="" class="form-control" placeholder="Search">
+            </div>
+        </div>
+          <div class="row">
+              <div class="col-lg-12">
+                  <table class="table table-striped" id="table1">
+                      <thead>
+                          <tr>
+                              <th>Group id</th>
+                              <th>Group name</th>
+                              <th>Description</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+
+                      </tbody>
+                  </table>
+                  <hr>
+              </div>
+          </div>
+        </div>
+    </div>
+      <div style="width:1200px;height:auto;border:1px solid #e3e3e3;border-radius:4px;text-align:center;background-color:#FFFFFF;margin-top:30px;">
+      <div class="container">
+        <h2 class="form-signin-heading">Events from groups with similar interests within 3 days</h2>
           <div class="row">
               <div class="col-lg-4 col-lg-offset-4">
                   <input type="search" id="search" value="" class="form-control" placeholder="Search">
@@ -145,28 +207,7 @@ body{
     </div>
 </div>
 
-  <div style="width:1200px;height:auto;border:1px solid #e3e3e3;border-radius:4px;text-align:center;background-color:#FFFFFF;margin-top:30px;">
-  <div class="container">
-    <h2 class="form-signin-heading">Selected interest groups</h2>
-      <div class="row">
-          <div class="col-lg-12">
-              <table class="table table-striped" id="table1">
-                  <thead>
-                      <tr>
-			  <th>Group id</th>
-                          <th>Group name</th>
-                          <th>Description</th>
-                      </tr>
-                  </thead>
-                  <tbody>
 
-                  </tbody>
-              </table>
-              <hr>
-          </div>
-      </div>
-    </div>
-</div>
 </div>
 
 
@@ -187,6 +228,7 @@ $(document).ready(function(){
     });
 
 });
+
 
   var tableRef = document.getElementById('table').getElementsByTagName('tbody')[0];
   var category = [];
@@ -216,50 +258,53 @@ $(document).ready(function(){
     var newText2  = document.createTextNode(keywords[i]);
     newCell1.appendChild(newText1);
     newCell2.appendChild(newText2);
-    newRow.setAttribute("onclick", "SelectedInterest('"+category[i]+"','"+keywords[i]+"');");
+    //newRow.setAttribute("onclick", "SelectedInterest('"+category[i]+"','"+keywords[i]+"');");
   }
 
 /*---------------------------------------*/
 
-  var tableRef1 = document.getElementById('table1').getElementsByTagName('tbody')[0];
-  var groupId = [];
-  var groupName = [];
-  var groupDesc = [];
-  <?php
-    $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-    $gid = array();
-    $gname = array();
-    $gdesc = array();
-    if (!$connection->connect_errno) {
-        $sql = "SELECT group_id, group_name, description FROM a_group natural join about where category = '" . $_SESSION['group_page_category'] . "' and keyword = '" . $_SESSION['group_page_keyword'] . "';";
-        $query= $connection->query($sql);
-        while($row = $query->fetch_assoc()){
-          array_push($gid, $row['group_id']);
-          array_push($gname, $row['group_name']);
-	  array_push($gdesc, $row['description']);
+
+    $.ajax({
+        type: 'POST',
+        url: 'InterestedGroupsProcessing.php',
+        data: { currUser:document.getElementById('current_user').innerHTML },
+        success: function(response) {
+          var groupId = response.split('#')[0]
+          var groupIdArr = [];
+          for(i = 0; i<(groupId.replace(/[^,]/g, "").length+1); i++){
+              groupIdArr[i] = groupId.split(',')[i].replace("[",'').replace(/['"]+/g, '').replace("]",'').replace(/['\\/]+/g, '/');
+            }
+
+          var groupName = response.split('#')[1]
+          var groupNameArr = [];
+          for(i = 0; i<(groupName.replace(/[^,]/g, "").length+1); i++){
+              groupNameArr[i] = groupName.split(',')[i].replace("[",'').replace(/['"]+/g, '').replace("]",'').replace(/['\\/]+/g, '/');
+            }
+
+          var groupDesc = response.split('#')[2]
+          var groupDescArr = [];
+          for(i = 0; i<(groupDesc.replace(/[^,]/g, "").length+1); i++){
+              groupDescArr[i] = groupDesc.split(',')[i].replace("[",'').replace(/['"]+/g, '').replace("]",'').replace(/['\\/]+/g, '/');
+            }
+
+          var tableRef1 = document.getElementById('table1').getElementsByTagName('tbody')[0];
+
+
+         for(var i = 0; i < groupIdArr.length; i++){
+           var newRow1   = tableRef1.insertRow(tableRef1.rows.length);
+           var newCell3  = newRow1.insertCell(0);
+           var newCell4  = newRow1.insertCell(1);
+           var newCell5  = newRow1.insertCell(2);
+           var newText3  = document.createTextNode(groupIdArr[i]);
+           var newText4  = document.createTextNode(groupNameArr[i]);
+           var newText5  = document.createTextNode(groupDescArr[i]);
+           newCell3.appendChild(newText3);
+           newCell4.appendChild(newText4);
+           newCell5.appendChild(newText5);
+           newRow1.setAttribute("onclick", "SelectedGroup('"+groupIdArr[i]+"');");
+         }
         }
-      }
-    ?>
-   groupId = <?php echo json_encode($gid) ?>;
-   groupName = <?php echo json_encode($gname) ?>;
-   groupDesc = <?php echo json_encode($gdesc) ?>;
- 
-  for(var i = 0; i < groupId.length; i++){
-    var newRow1   = tableRef1.insertRow(tableRef1.rows.length);
-    var newCell3  = newRow1.insertCell(0);
-    var newCell4  = newRow1.insertCell(1);
-    var newCell5  = newRow1.insertCell(2);
-    var newText3  = document.createTextNode(groupId[i]);
-    var newText4  = document.createTextNode(groupName[i]);
-    var newText5  = document.createTextNode(groupDesc[i]);
-    newCell3.appendChild(newText3);
-    newCell4.appendChild(newText4);
-    newCell5.appendChild(newText5);
-    newRow1.setAttribute("onclick", "SelectedGroup('"+groupId[i]+"');");
-  }
-
- 
-
+    });
 
 /*---------------------------------------*/
 
@@ -270,10 +315,6 @@ var eventStart = [];
 var eventEnd = [];
 var eventLocationName = [];
 var eventZipCode = [];
-
-
-
-
 
 $.ajax({
     type: 'POST',
@@ -291,8 +332,18 @@ $.ajax({
       for(i = 0; i<(keyword.replace(/[^,]/g, "").length+1); i++){
           keywordArr[i] = keyword.split(',')[i].replace("[",'').replace(/['"]+/g, '').replace("]",'').replace(/['\\/]+/g, '/');
         }
-        console.log(categoryArr)
         console.log(keywordArr)
+        console.log(categoryArr)
+        var tableRef2 = document.getElementById('myInterestTable').getElementsByTagName('tbody')[0];
+        for(var i = 0; i < categoryArr.length; i++){
+         var newRow1   = tableRef2.insertRow(tableRef2.rows.length);
+         var newCell1  = newRow1.insertCell(0);
+         var newCell2  = newRow1.insertCell(1);
+         var newText1  = document.createTextNode(categoryArr[i]);
+         var newText2  = document.createTextNode(keywordArr[i]);
+         newCell1.appendChild(newText1);
+         newCell2.appendChild(newText2);
+        }
 
         $.ajax({
             type: 'POST',
@@ -388,9 +439,16 @@ $.ajax({
             $( '#EventTable' ).searchable({
                 searchType: 'default'
             });
+            $( '#table1' ).searchable({
+                searchField: '#selectedInterestSearch',
+                searchType: 'default'
+            });
+            $( '#myInterestTable' ).searchable({
+                searchField: '#myInterestSearch',
+                searchType: 'default'
+            });
         });
         });
-
 
 
     }
@@ -402,9 +460,6 @@ $.ajax({
 });
 function SelectedEvent(eventid){
 window.location.href = "eventPage.php?event_page_eventid="+eventid;
-}
-function SelectedInterest(category, keyword){
-window.location.href = "interests.php?group_page_category="+category+"&group_page_keyword="+keyword;
 }
 function SelectedGroup(g_id){
 window.location.href = "groupPage.php?group_page_groupid="+g_id;

@@ -65,8 +65,21 @@ if (!$connection->connect_errno) {
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="pace.js"></script>
+  <link href="pace-theme-loading-bar.css" rel="stylesheet" />
 </head>
 <style>
+body > :not(.pace),body:before,body:after {
+  -webkit-transition:opacity .4s ease-in-out;
+  -moz-transition:opacity .4s ease-in-out;
+  -o-transition:opacity .4s ease-in-out;
+  -ms-transition:opacity .4s ease-in-out;
+  transition:opacity .4s ease-in-out
+}
+
+body:not(.pace-done) > :not(.pace),body:not(.pace-done):before,body:not(.pace-done):after {
+  opacity:0
+}
 body{
   background-color:#F3EFE0;
 }
@@ -155,7 +168,7 @@ body{
     <input name="userImage" type="file" class="inputFile" required/>
     <br>
     <input name="eventid" type="hidden" class="inputFile" value="<?php echo $eventid;?>"/>
-    <input name="username" type="hidden" class="inputFile" value="<?php echo $_SESSION['user_name'];?>">
+     <input name="username" type="hidden" class="inputFile" value="<?php echo $_SESSION['user_name'];?>">
   <input class="btn btn-primary btn-block" type="submit" value="Upload" class="btnSubmit" />
   </form>
   <div id="uploadErrorMsg" style="width:300px;margin-left:auto;margin-right:auto;font-size:16px;text-align:center;font-weight:bold;">
@@ -215,7 +228,7 @@ body{
   </div>
 </div>
 <a style="display:none;" id="current_user"><?php echo $_SESSION['user_name']; ?></a>
-<a style="display:none;" id="event_end_time"><?php echo $endTime[0]; ?></a>
+<a style="display:none;" id="event_start_time"><?php echo $startTime[0]; ?></a>
 
 <script src="//rawgithub.com/stidges/jquery-searchable/master/dist/jquery.searchable-1.0.0.min.js"></script>
 <script src="javascripts/bootstrap-rating-input.min.js" type="text/javascript"></script>
@@ -224,12 +237,12 @@ $(document).ready(function(){
 $(this).scrollTop(0);
 document.getElementById('rating_username').value = document.getElementById('current_user').innerHTML;
 
-var EventEndDateTime = new Date(document.getElementById('event_end_time').innerHTML);
-var dateNow = new Date(); // or Date.now()
-if(dateNow < EventEndDateTime){
+var EventStartDateTime = new Date(document.getElementById('event_start_time').innerHTML);
+var dateNow = new Date();
+if(dateNow < EventStartDateTime){
   document.getElementById("event_rating").disabled = true;
   document.getElementById("submitRatingButton").disabled = true;
-  document.getElementById('ratingErrorMsg').innerHTML = "This event has not end yet.";
+  document.getElementById('ratingErrorMsg').innerHTML = "This event has not start yet.";
 }
 
 
