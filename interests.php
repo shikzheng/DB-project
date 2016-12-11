@@ -36,8 +36,8 @@ body{
       <ul class="nav navbar-nav">
         <li><a style="color:white;background-color:#00BFFF;" href="main.php">Home</a></li>
         <li><a style="color:white;background-color:#00BFFF;" href="friends.php">Friends</a></li>
-        <li><a style="color:white;background-color:#00BFFF;" href="interests.php">Interests</a></li>
-        <li><a style="color:yellow;background-color:#00BFFF;" href="#">Groups</a></li>
+        <li><a style="color:yellow;background-color:#00BFFF;" href="#">Interests</a></li>
+        <li><a style="color:white;background-color:#00BFFF;" href="group.php">Groups</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <!--same as"index.php?logout=true" -->
@@ -48,34 +48,26 @@ body{
   <div class="row" style="width:100%;">
     <div class="col-md-4">
       <div style="margin:auto;width:450px;height:415px;border:1px solid #e3e3e3;border-radius:4px;text-align:center;background-color:#f5f5f5;">
-      <form class="form-signin" method="post" action="createGroupProcessing.php" name="" style="width:90%;margin-left:auto;margin-right:auto;">
-          <h2 class="form-signin-heading">Create a Group</h2>
-          <label class="sr-only" for="creategroup_GroupName">Group Name</label>
-          <input class="form-control"  value = "<?php if((isset($_SESSION["creategroup_GroupName"]) && (isset($_SESSION["createGroupErrorMsg"])) && ($_SESSION['createGroupErrorMsg'] != "Success! The group has been created."))){ echo $_SESSION["creategroup_GroupName"];} ?>"
-          style = "height:45px;" placeholder="Group Name" id="creategroup_GroupName" class="login_input" type="text" name="creategroup_GroupName" autocomplete="off" autofocus required />
+      <form class="form-signin" method="post" action="addInterestProcessing.php" name="" style="width:90%;margin-left:auto;margin-right:auto;">
+          <h2 class="form-signin-heading">Add an interest</h2>
+          <label class="sr-only" for="addInterest_Category">Category</label>
+          <input class="form-control"  value = "<?php if((isset($_SESSION["addInterest_Category"]) && (isset($_SESSION["addInterestErrorMsg"])) && ($_SESSION['addInterestErrorMsg'] != "Success! The interest has been added."))){ echo $_SESSION["addInterest_Category"];} ?>"
+          style = "height:45px;" placeholder="Category" id="addInterest_Category" class="login_input" type="text" name="addInterest_Category" autocomplete="off" autofocus required />
           <br>
-          <label class="sr-only" for="creategroup_Description">Description</label>
-          <input class="form-control" value = "<?php if((isset($_SESSION["creategroup_Description"]) && (isset($_SESSION["createGroupErrorMsg"])) && ($_SESSION['createGroupErrorMsg'] != "Success! The group has been created."))){ echo $_SESSION["creategroup_Description"];} ?>"
-           style = "height:45px;" placeholder="Description" id="creategroup_Description" class="login_input" type="text" name="creategroup_Description" autocomplete="off" autofocus required />
-          <br>
-          <label class="sr-only" for="creategroup_Category">Category</label>
-          <input class="form-control" value = "<?php if((isset($_SESSION["creategroup_Category"]) && (isset($_SESSION["createGroupErrorMsg"])) && ($_SESSION['createGroupErrorMsg'] != "Success! The group has been created."))){ echo $_SESSION["creategroup_Category"];} ?>"
-           style = "height:45px;" placeholder="Category" id="creategroup_Category" class="login_input" type="text" name="creategroup_Category" autocomplete="off" autofocus required />
-          <br>
-          <label class="sr-only" for="creategroup_Keywords">Keywords</label>
-          <input class="form-control" value = "<?php if((isset($_SESSION["creategroup_Keywords"])&& (isset($_SESSION["createGroupErrorMsg"]))  && ($_SESSION['createGroupErrorMsg'] != "Success! The group has been created."))){ echo $_SESSION["creategroup_Keywords"];} ?>"
-           style = "height:45px;" placeholder="Keywords (Please separate each keyword with a comma)" id="creategroup_Keywords" class="login_input" type="text" name="creategroup_Keywords" autocomplete="off" autofocus required />
+          <label class="sr-only" for="addInterest_Keyword">Keyword</label>
+          <input class="form-control" value = "<?php if((isset($_SESSION["addInterest_Keyword"]) && (isset($_SESSION["addInterestErrorMsg"])) && ($_SESSION['addInterestErrorMsg'] != "Success! The interest has been added."))){ echo $_SESSION["addInterest_Keyword"];} ?>"
+           style = "height:45px;" placeholder="Keyword" id="addInterest_Keyword" class="login_input" type="text" name="addInterest_Keyword" autocomplete="off" autofocus required />
           <br>
           <br>
-          <button class="btn btn-lg btn-primary btn-block" type="submit"  name="login">Create Group</button>
+          <button class="btn btn-lg btn-primary btn-block" type="submit"  name="login">Add Interest</button>
       </form>
       <br>
       <br>
       <div>
         <?php
-          if(isset($_SESSION['createGroupErrorMsg'])){
-            echo $_SESSION['createGroupErrorMsg'];
-            unset($_SESSION['createGroupErrorMsg']);
+          if(isset($_SESSION['addInterestErrorMsg'])){
+            echo $_SESSION['addInterestErrorMsg'];
+            unset($_SESSION['addInterestErrorMsg']);
 
           }
         ?>
