@@ -14,18 +14,19 @@ if (empty($_POST['user_name'])) {
     if (!$connection->connect_errno) {
         $user_name = $connection->real_escape_string(strip_tags($_POST['user_name'], ENT_QUOTES));
         $user_password = $connection->real_escape_string(strip_tags($_POST['user_password'], ENT_QUOTES));
-        $sql = "SELECT username, email, password, zipcode, firstname, lastname
-                FROM member
-                WHERE username = '" . $user_name . "';";
-        $result_of_login_check = $connection->query($sql);
-        if ($result_of_login_check->num_rows == 1){
-            $result_row = $result_of_login_check->fetch_object();
-            if (password_verify($user_password, $result_row->password)) {
-                $_SESSION['user_name'] = $result_row->username;
-                $_SESSION['user_email'] = $result_row->email;
-                $_SESSION['user_firstname'] = $result_row->firstname;
-                $_SESSION['user_lastname'] = $result_row->lastname;
-                $_SESSION['user_zipcode'] = $result_row->zipcode;
+	$stmt = $connection->prepare("SELECT username, email, password, zipcode, firstname, lastname FROM member WHERE username = ?");
+	$stmt->bind_param("s", $user_name);
+        $stmt->execute();
+	$stmt->bind_result($unme, $eml, $pwd, $zip, $fname, $lname);
+	$stmt->store_result();
+        if ($stmt->num_rows == 1){
+            $stmt->fetch();
+            if (password_verify($user_password, $pwd)) {
+                $_SESSION['user_name'] = $unme;
+                $_SESSION['user_email'] = $eml;
+                $_SESSION['user_firstname'] = $fname;
+                $_SESSION['user_lastname'] = $lname;
+                $_SESSION['user_zipcode'] = $zip;
                 $_SESSION['user_login_status'] = 1;
             } else {
                 $_SESSION['loginErrorMsg'] = "Wrong username / password combination. Try again.";

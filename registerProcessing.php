@@ -73,17 +73,17 @@ $_SESSION["registration_user_name"] = $user_name;
             $user_password = $connection->real_escape_string(strip_tags($_POST['user_password_new'], ENT_QUOTES));
             $user_password_hash = password_hash($user_password, PASSWORD_DEFAULT);
 
-            $sql = "SELECT * FROM member WHERE username = '" . $user_name . "' OR email = '" . $user_email . "';";
-            $query_check_user_name = $connection->query($sql);
-
-            if ($query_check_user_name->num_rows == 1) {
+	    $stmt = $connection->prepare("SELECT * FROM member WHERE username = ? OR email = ?");
+	    $stmt->bind_param("ss", $user_name, $user_email);
+	    $stmt->execute();
+	    $stmt->store_result();
+            if ($stmt->num_rows == 1) {
                 $_SESSION['registerErrorMsg'] = "Sorry, that username / email address is already taken.";
                 header("Location:register.php");
             } else {
-                $sql = "INSERT INTO member (username, password, email, firstname, lastname, zipcode)
-                        VALUES('" . $user_name . "', '" . $user_password_hash . "', '" . $user_email . "', '" . $user_firstname . "', '" . $user_lastname . "', '" . $user_zipcode . "');";
-                $query_new_user_insert = $connection->query($sql);
-                if ($query_new_user_insert) {
+		$stmt1 = $connection->prepare("INSERT INTO member (username, password, email, firstname, lastname, zipcode) VALUES(?, ?, ?, ?, ?, ?)");
+		$stmt1->bind_param("ssssss", $user_name, $user_password_hash, $user_email, $user_firstname, $user_lastname, $user_zipcode);
+		if ($stmt1->execute()) {
                     $_SESSION['registerErrorMsg'] = "Your account has been created successfully. You can now log in.";
                     header("Location:register.php");
                 } else {

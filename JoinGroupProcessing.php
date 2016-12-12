@@ -17,23 +17,27 @@ $joingroup_GroupName = $connection->real_escape_string(strip_tags($_POST['joingr
         }
         if (!$connection->connect_errno) {
           $user = $connection->real_escape_string(strip_tags($_SESSION['user_name'], ENT_QUOTES));
-          $sql1 = "SELECT group_id FROM a_group WHERE group_name = '" . $joingroup_GroupName . "';";
-          $result = $connection->query($sql1);
-          if($result->num_rows < 1){
+	  $stmt1 = $connection->prepare("SELECT group_id FROM a_group WHERE group_name = ?");
+	  $stmt1->bind_param($joingroup_GroupName);
+          $stmt1->execute();
+	  $stmt1->bind_result($g_id);
+	  $stmt1->store_result();
+          if($stmt1->num_rows < 1){
             $_SESSION['JoinGroupErrorMsg'] = "This group does not exist";
             header("Location:group.php");
           }else{
-          while($row = $result->fetch_assoc()){
-            $sql = "SELECT * FROM belongs_to WHERE group_id = '" . $row["group_id"] . "' AND username = '" . $user . "';";
-            $check1 = $connection->query($sql);
-            if ($check1->num_rows == 1) {
+          while($stmt1->fetch()){
+	    $stmt = $connection->prepare("SELECT * FROM belongs_to WHERE group_id = ? AND username = ?");
+	    $stmt->bind_param("ss", $g_id, $user);
+	    $stmt->execute();
+	    $stmt->store_result();
+            if ($stmt->num_rows == 1) {
                 $_SESSION['JoinGroupErrorMsg'] = "You've already joined the group";
                 header("Location:group.php");
             }else{
-            $sql2 = "INSERT INTO belongs_to (group_id, username, authorized)
-                      VALUES('" . $row["group_id"] . "', '" . $user . "', '0');";
-            $query_group_member_insert = $connection->query($sql2);
-            if($query_group_member_insert){
+	    $stmt2 = $connection->prepare("INSERT INTO belongs_to (group_id, username, authorized) VALUES(?, ?, '0')");
+	    $stmt2->bind_param("ss", $g_id, $user);
+	    if($stmt2->execute()){
               $_SESSION['JoinGroupErrorMsg'] = "Success! You have joined the group.";
             }else{
               $_SESSION['JoinGroupErrorMsg'] = "Error, please try again";

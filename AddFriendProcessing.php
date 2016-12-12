@@ -15,25 +15,30 @@ $addFriend_username = $connection->real_escape_string(strip_tags($_POST['addFrie
         }
         if (!$connection->connect_errno) {
           $user = $connection->real_escape_string(strip_tags($_SESSION['user_name'], ENT_QUOTES));
-          $sql1 = "SELECT username FROM member WHERE username = '" . $addFriend_username . "';";
-          $result = $connection->query($sql1);
-          if($result->num_rows < 1){
+          $stmt1 = $connection->prepare("SELECT username FROM member WHERE username = ?");
+	  $stmt1->bind_param("s", $addFriend_username);
+	  $stmt1->execute();
+	  $stmt1->bind_result($usnme);
+	  $stmt1->store_result();
+          if($stmt1->num_rows < 1){
             $_SESSION['AddFriendErrorMsg'] = "Error. This user does not exist";
             header("Location:friends.php");
           }else if($addFriend_username == $user){
             $_SESSION['AddFriendErrorMsg'] = "Error. You cannot add yourself";
             header("Location:friends.php");
           }else{
-            $sql = "SELECT * FROM friend WHERE friend_of = '" . $user . "' AND friend_to = '" . $addFriend_username . "';";
-            $check1 = $connection->query($sql);
-            if ($check1->num_rows > 0) {
+	    $stmt = $connection->prepare("SELECT * FROM friend WHERE friend_of = ? AND friend_to = ?");
+	    $stmt->bind_param("ss", $user, $addFriend_username);
+            $stmt->execute();
+	    $stmt->bind_result($f_of, $f_to);
+	    $stmt->store_result();
+            if ($stmt->num_rows > 0) {
                 $_SESSION['AddFriendErrorMsg'] = "Error. You two are already friends";
                 header("Location:friends.php");
             }else{
-            $sql2 = "INSERT INTO friend (friend_of, friend_to)
-                      VALUES('" . $user . "', '" . $addFriend_username . "');";
-            $query_group_member_insert = $connection->query($sql2);
-            if($query_group_member_insert){
+	    $stmt2 = $connection->prepare("INSERT INTO friend (friend_of, friend_to) VALUES(?, ?)");
+	    $stmt2->bind_param("ss", $user, $addFriend_username);
+            if($stmt2->execute()){
               $_SESSION['AddFriendErrorMsg'] = "Success! You two are friends now!";
             }else{
               $_SESSION['AddFriendErrorMsg'] = "Error, please try again";
