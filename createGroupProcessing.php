@@ -31,29 +31,34 @@ $keyword = $connection->real_escape_string(strip_tags($_POST['creategroup_Keywor
         }
         if (!$connection->connect_errno) {
 
-            $sql = "SELECT * FROM a_group WHERE group_name = '" . $creategroup_GroupName . "';";
-            $query_check_group_name = $connection->query($sql);
-            if ($query_check_group_name->num_rows == 1) {
+	    $stmt = $connection->prepare("SELECT * FROM a_group WHERE group_name = ?");
+	    $stmt->bind_param("s", $creategroup_GroupName);
+            $stmt->execute();
+	    $stmt->store_result();
+            if ($stmt->num_rows == 1) {
                 $_SESSION['createGroupErrorMsg'] = "Sorry, that group name is already taken.";
             } else {
-                $sql = "INSERT INTO a_group (group_name, description, creator)
-                        VALUES('" . $creategroup_GroupName . "', '" . $creategroup_Description . "', '" . $group_creator . "');";
-                $query_new_user_insert = $connection->query($sql);
-                if ($query_new_user_insert) {
+		$stmt5 = $connection->prepare("INSERT INTO a_group (group_name, description, creator) VALUES(?, ?, ?)");
+		$stmt5->bind_param("sss", $creategroup_GroupName, $creategroup_Description, $group_creator);
+                if ($stmt5->execute()) {
                     $_SESSION['createGroupErrorMsg'] = "Success! The group has been created.";
-                    $sql1 = "SELECT group_id FROM a_group WHERE group_name = '" . $creategroup_GroupName . "';";
-                    $result = $connection->query($sql1);
-                    while($row = $result->fetch_assoc()){
-                      $sql2 = "INSERT INTO belongs_to (group_id, username, authorized)
-                              VALUES('" . $row["group_id"] . "', '" . $group_creator . "', '1');";
-                      $sql3 = "INSERT INTO interest (category, keyword)
-                              VALUES('" . $category . "', '" . $keyword . "');";
-                      $sql4 = "INSERT INTO about (category, keyword, group_id)
-                              VALUES('" . $category . "', '" . $keyword . "', '" . $row["group_id"] . "');";
-                              $query_group_interest_insert = $connection->query($sql3);
-                              $query_group_creator_belongsTo_insert = $connection->query($sql2);
-                              $query_group_about_insert = $connection->query($sql4);
-                    }
+		    $stmt1 = $connection->prepare("SELECT group_id FROM a_group WHERE group_name = ?");
+		    $stmt1->bind_param("s", $creategroup_GroupName);
+                    $stmt1->execute();
+		    $stmt1->bind_result($g_id);
+		    $stmt1->store_result();
+                    while($stmt1->fetch()){
+
+		      $stmt2 = $connection->prepare("INSERT INTO belongs_to (group_id, username, authorized) VALUES(?, ?, '1')");
+		      $stmt2->bind_param("ss", $g_id, $group_creator);
+		      $stmt3 = $connection->prepare("INSERT INTO interest (category, keyword) VALUES(?, ?)");
+		      $stmt3->bind_param("ss", $category, $keyword);
+		      $stmt4 = $connection->prepare("INSERT INTO about (category, keyword, group_id) VALUES(?, ?, ?)");
+		      $stmt4->bind_param("sss", $category, $keyword, $g_id);
+    			$stmt2->execute();
+			$stmt3->execute();
+			$stmt4->execute();
+		    }
                 } else {
                     $_SESSION['createGroupErrorMsg'] = "Group creation failed, please try again";
                 }

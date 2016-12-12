@@ -6,11 +6,13 @@
     $categoryArr = array();
     $keywordArr = array();
     if (!$connection->connect_errno) {
-      $sql1 = "SELECT category,keyword FROM interested_in WHERE username = '".$username."';";
-      $query1= $connection->query($sql1);
-      while($row = $query1->fetch_assoc()){
-        array_push($categoryArr, $row['category']);
-        array_push($keywordArr, $row['keyword']);
+      $stmt1 = $connection->prepare("SELECT category,keyword FROM interested_in WHERE username = ?");
+      $stmt1->bind_param("s", $username);
+      $stmt1->execute();
+      $stmt1->bind_result($ctg, $kyw);
+      while($stmt1->fetch()){
+        array_push($categoryArr, $ctg);
+        array_push($keywordArr, $kyw);
       }
     }
     echo json_encode($categoryArr);

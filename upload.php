@@ -23,10 +23,9 @@ if(is_uploaded_file($_FILES['userImage']['tmp_name'])) {
       header("Location: upload.php");
     }
     else{
-      $sql = "INSERT INTO photo(image,caption,name,image_name)
-      VALUES('" . $imgData . "', '" . $photo_caption . "', '" . $photo_name . "', '" . $imagename . "')";
-      $result = $connection->query($sql);
-      if($result){
+      $stmt = $connection->prepare("INSERT INTO photo(image,caption,name,image_name) VALUES(?, ?, ?, ?)");
+      $stmt->bind_param("ssss", $imgData, $photo_caption, $photo_name, $imagename);
+      if($stmt->execute){
         $_SESSION['errorrrr'] = "Success";
       }else{
         echo("Error description: " . mysqli_error($connection));
