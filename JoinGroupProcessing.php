@@ -18,7 +18,7 @@ $joingroup_GroupName = $connection->real_escape_string(strip_tags($_POST['joingr
         if (!$connection->connect_errno) {
           $user = $connection->real_escape_string(strip_tags($_SESSION['user_name'], ENT_QUOTES));
 	  $stmt1 = $connection->prepare("SELECT group_id FROM a_group WHERE group_name = ?");
-	  $stmt1->bind_param($joingroup_GroupName);
+	  $stmt1->bind_param("s", $joingroup_GroupName);
           $stmt1->execute();
 	  $stmt1->bind_result($g_id);
 	  $stmt1->store_result();
