@@ -16,7 +16,7 @@ if (!$connection->connect_errno) {
   while($query1->fetch()){
     array_push($eventEndTime, $et);
   }
-  if(strtotime($eventEndTime[0]) >  time()){
+  if(strtotime($eventEndTime[0]) > time() - 5*60*60){
   $sql = "INSERT INTO sign_up (event_id, username, rating)
           VALUES(?,?,?)";
   $query = $connection->prepare($sql);
