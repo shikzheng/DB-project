@@ -14,16 +14,19 @@
 
     if (!$connection->connect_errno) {
 
-      $sql = "SELECT * FROM an_event NATURAL JOIN sign_up WHERE start_time < NOW() + INTERVAL 3 DAY AND end_time >= NOW() AND username = '" . $username . "';";
-      $query= $connection->query($sql);
-      while($row = $query->fetch_assoc()){
-        array_push($eventId, $row['event_id']);
-        array_push($eventTitle, $row['title']);
-        array_push($eventDescription, $row['description']);
-        array_push($eventStart, $row['start_time']);
-        array_push($eventEnd, $row['end_time']);
-        array_push($eventLocationName, $row['location_name']);
-        array_push($eventZipCode, $row['zipcode']);
+      $sql = "SELECT * FROM an_event NATURAL JOIN sign_up WHERE start_time < NOW() + INTERVAL 3 DAY AND end_time >= NOW() AND username = ?";
+      $query= $connection->prepare($sql);
+      $query->bind_param("s", $username);
+      $query->execute();
+      $query->bind_result($eid,$titl,$des,$st,$et,$locn,$zcode,$userN,$rate);
+      while($query->fetch()){
+        array_push($eventId, $eid);
+        array_push($eventTitle, $titl);
+        array_push($eventDescription, $des);
+        array_push($eventStart, $st);
+        array_push($eventEnd, $et);
+        array_push($eventLocationName, $locn);
+        array_push($eventZipCode, $zcode);
      }
     }
     echo json_encode($eventId);

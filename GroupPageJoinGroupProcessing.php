@@ -14,15 +14,21 @@ $joingroup_GroupId = $connection->real_escape_string(strip_tags($_POST['joingrou
         }
         if (!$connection->connect_errno) {
           $user = $connection->real_escape_string(strip_tags($_SESSION['user_name'], ENT_QUOTES));
-            $sql = "SELECT * FROM belongs_to WHERE group_id = '" . $joingroup_GroupId . "' AND username = '" . $user . "';";
-            $check1 = $connection->query($sql);
+            $sql = "SELECT * FROM belongs_to WHERE group_id = ? AND username = ?";
+            $check1 = $connection->prepare($sql);
+            $check1->bind_param("is", $joingroup_GroupId,$user);
+            $check1->execute();
+            $check1->store_result();
             if ($check1->num_rows == 1) {
                 $_SESSION['JoinGroupErrorMsg2'] = "You've already joined the group";
                 header("Location:groupPage.php?group_page_groupid=".$joingroup_GroupId."");
             }else{
             $sql2 = "INSERT INTO belongs_to (group_id, username, authorized)
-                      VALUES('" . $joingroup_GroupId . "', '" . $user . "', '0');";
-            $query_group_member_insert = $connection->query($sql2);
+                      VALUES(?,?,?)";
+            $query_group_member_insert = $connection->prepare($sql2);
+            $autho = 0;
+            $query_group_member_insert->bind_param("isi", $joingroup_GroupId,$user,$autho);
+            $query_group_member_insert->execute();
             if($query_group_member_insert){
               $_SESSION['JoinGroupErrorMsg2'] = "Success! You have joined the group.";
             }else{

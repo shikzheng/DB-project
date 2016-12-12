@@ -21,19 +21,22 @@ $authorized = array();
 
 
 if (!$connection->connect_errno) {
-  $sql = "SELECT category,keyword,group_name,description,creator,username,authorized FROM about NATURAL JOIN a_group NATURAL JOIN belongs_to WHERE group_id = '" . $groupid . "';";
-  $query= $connection->query($sql);
+  $sql = "SELECT category,keyword,group_name,description,creator,username,authorized FROM about NATURAL JOIN a_group NATURAL JOIN belongs_to WHERE group_id = ?";
+  $query= $connection->prepare($sql);
+  $query->bind_param("i", $groupid);
+  $query->execute();
+  $query->bind_result($cat,$keyw,$gn,$des,$cre,$userN,$autho);
   if (!$query) {
     printf("Errormessage: %s\n", $connection->error);
   }
-  while($row = $query->fetch_assoc()){
-    array_push($category, $row['category']);
-    array_push($keywords, $row['keyword']);
-    array_push($groupName, $row['group_name']);
-    array_push($description, $row['description']);
-    array_push($creator, $row['creator']);
-    array_push($members, $row['username']);
-    array_push($authorized, $row['authorized']);
+  while($query->fetch()){
+    array_push($category, $cat);
+    array_push($keywords, $keyw);
+    array_push($groupName, $gn);
+    array_push($description, $des);
+    array_push($creator, $cre);
+    array_push($members, $userN);
+    array_push($authorized, $autho);
   }
 }
 
@@ -261,14 +264,17 @@ $(document).ready(function(){
       $email = array();
       $AllUsername = array();
       if (!$connection->connect_errno) {
-        $sql = "SELECT username,firstname,lastname,email,username FROM member NATURAL JOIN belongs_to WHERE group_id = '" . $groupid . "';";
-        $query= $connection->query($sql);
-        while($row = $query->fetch_assoc()){
-          array_push($theusername, $row['username']);
-          array_push($firstname, $row['firstname']);
-          array_push($lastname, $row['lastname']);
-          array_push($email, $row['email']);
-          array_push($AllUsername, $row['username']);
+        $sql = "SELECT username,firstname,lastname,email,username FROM member NATURAL JOIN belongs_to WHERE group_id = ?";
+        $query= $connection->prepare($sql);
+        $query->bind_param("i", $groupid);
+        $query->execute();
+        $query->bind_result($userN,$fn,$ln,$em,$userN2);
+        while($query->fetch()){
+          array_push($theusername, $userN);
+          array_push($firstname, $fn);
+          array_push($lastname, $ln);
+          array_push($email, $em);
+          array_push($AllUsername, $userN2);
         }
       }
       ?>
@@ -376,34 +382,43 @@ $(document).ready(function(){
     $eventid = array();
 
     if (!$connection->connect_errno) {
-      $sql = "SELECT title,description,start_time,end_time,location_name,zipcode,event_id FROM organize NATURAL JOIN an_event WHERE group_id = '" . $groupid . "';";
-      $query= $connection->query($sql);
-      while($row = $query->fetch_assoc()){
-        array_push($title2, $row['title']);
-        array_push($description2, $row['description']);
-        array_push($startTime2, $row['start_time']);
-        array_push($endTime2, $row['end_time']);
-        array_push($locationName2, $row['location_name']);
-        array_push($zipcode2, $row['zipcode']);
-        array_push($eventid, $row['event_id']);
+      $sql = "SELECT title,description,start_time,end_time,location_name,zipcode,event_id FROM organize NATURAL JOIN an_event WHERE group_id = ?";
+      $query= $connection->prepare($sql);
+      $query->bind_param("i", $groupid);
+      $query->execute();
+      $query->bind_result($titl,$dex,$st,$et,$loc,$zcode,$eid);
+      while($query->fetch()){
+        array_push($title2, $titl);
+        array_push($description2, $des);
+        array_push($startTime2, $st);
+        array_push($endTime2, $et);
+        array_push($locationName2, $loc);
+        array_push($zipcode2, $zcode);
+        array_push($eventid, $eid);
       }
     }
     $queryEventId = array();
     $NumRating = array();
     if (!$connection->connect_errno) {
-      $sql = "SELECT event_id,count(*) as NumRating FROM sign_up NATURAL JOIN organize WHERE group_id = '" . $groupid . "' GROUP BY event_id;";
-      $query= $connection->query($sql);
-      while($row = $query->fetch_assoc()){
-        array_push($queryEventId, $row['event_id']);
-        array_push($NumRating, $row['NumRating']);
+      $sql = "SELECT event_id,count(*) as NumRating FROM sign_up NATURAL JOIN organize WHERE group_id = ? GROUP BY event_id";
+      $query= $connection->prepare($sql);
+      $query->bind_param("i", $groupid);
+      $query->execute();
+      $query->bind_result($eid,$count);
+      while($query->fetch()){
+        array_push($queryEventId, $eid);
+        array_push($NumRating, $count);
       }
     }
     $AEventRating = array();
     if (!$connection->connect_errno) {
-      $sql = "SELECT rating FROM sign_up NATURAL JOIN organize WHERE group_id = '" . $groupid . "';";
-      $query= $connection->query($sql);
-      while($row = $query->fetch_assoc()){
-        array_push($AEventRating, $row['rating']);
+      $sql = "SELECT rating FROM sign_up NATURAL JOIN organize WHERE group_id = ?";
+      $query= $connection->prepare($sql);
+      $query->bind_param("i", $groupid);
+      $query->execute();
+      $query->bind_result($rate);
+      while($query->fetch()){
+        array_push($AEventRating, $rate);
       }
     }
 

@@ -269,12 +269,15 @@ $firstname = array();
 $lastname = array();
 $email = array();
 if (!$connection->connect_errno) {
-  $sql = "SELECT firstname,lastname,email FROM sign_up NATURAL JOIN member WHERE event_id = '" . $_SESSION['event_page_eventid'] . "';";
-  $query= $connection->query($sql);
-  while($row = $query->fetch_assoc()){
-    array_push($firstname, $row['firstname']);
-    array_push($lastname, $row['lastname']);
-    array_push($email, $row['email']);
+  $sql = "SELECT firstname,lastname,email FROM sign_up NATURAL JOIN member WHERE event_id = ?";
+  $query= $connection->prepare($sql);
+  $query->bind_param("i", $_SESSION['event_page_eventid']);
+  $query->execute();
+  $query->bind_result($fn, $ln, $em);
+  while($query->fetch()){
+    array_push($firstname, $fn);
+    array_push($lastname, $ln);
+    array_push($email, $em);
   }
 }
 ?>

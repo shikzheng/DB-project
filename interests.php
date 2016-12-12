@@ -240,10 +240,12 @@ $(document).ready(function(){
       $keywords = array();
       if (!$connection->connect_errno) {
         $sql = "SELECT category,keyword FROM interest;";
-        $query= $connection->query($sql);
-        while($row = $query->fetch_assoc()){
-          array_push($category, $row['category']);
-          array_push($keywords, $row['keyword']);
+        $query= $connection->prepare($sql);
+        $query->execute();
+        $query->bind_result($cat,$keyw);
+        while($query->fetch()){
+          array_push($category, $cat);
+          array_push($keywords, $keyw);
         }
       }
    ?>

@@ -8,15 +8,21 @@ $userName = $connection->real_escape_string(strip_tags($_POST['uname'], ENT_QUOT
 $eventEndTime = array();
 
 if (!$connection->connect_errno) {
-  $sql1 = "SELECT end_time FROM an_event WHERE event_id = '" . $eventId . "';";
-  $query1 = $connection->query($sql1);
-  while($row = $query1->fetch_assoc()){
-    array_push($eventEndTime, $row["end_time"]);
+  $sql1 = "SELECT end_time FROM an_event WHERE event_id = ?";
+  $query1 = $connection->prepare($sql1);
+  $query1->bind_param("i", $eventId);
+  $query1->execute();
+  $query1->bind_result($et);
+  while($query1->fetch()){
+    array_push($eventEndTime, $et);
   }
   if(strtotime($eventEndTime[0]) >  time()){
   $sql = "INSERT INTO sign_up (event_id, username, rating)
-          VALUES('" . $eventId . "', '" .  $userName . "', 6);";
-  $query = $connection->query($sql);
+          VALUES(?,?,?)";
+  $query = $connection->prepare($sql);
+  $rate = 6;
+  $query->bind_param("isi", $eventId,$userName,$rate);
+  $query->execute();
 }else{
   echo "Passed";
 }

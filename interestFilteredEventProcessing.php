@@ -13,16 +13,19 @@
       $eventLocationName = array();
       $eventZipCode = array();
       for($i = 0; $i<count($categoryArr);$i++){
-      $sql = "SELECT * FROM an_event NATURAL JOIN organize NATURAL JOIN about WHERE start_time < NOW() + INTERVAL 3 DAY AND end_time >= NOW() AND category = '" . $categoryArr[$i] . "' AND keyword = '" . $keywordArr[$i] . "';";
-      $query= $connection->query($sql);
-      while($row = $query->fetch_assoc()){
-        array_push($eventId, $row['event_id']);
-        array_push($eventTitle, $row['title']);
-        array_push($eventDescription, $row['description']);
-        array_push($eventStart, $row['start_time']);
-        array_push($eventEnd, $row['end_time']);
-        array_push($eventLocationName, $row['location_name']);
-        array_push($eventZipCode, $row['zipcode']);
+      $sql = "SELECT * FROM an_event NATURAL JOIN organize NATURAL JOIN about WHERE start_time < NOW() + INTERVAL 3 DAY AND end_time >= NOW() AND category = ? AND keyword = ?";
+      $query= $connection->prepare($sql);
+      $query->bind_param("ss", $categoryArr[$i],$keywordArr[$i]);
+      $query->execute();
+      $query->bind_result($gid,$eid,$titl,$des,$st,$et,$locn,$zcode,$cat,$keyw);
+      while($query->fetch()){
+        array_push($eventId, $eid);
+        array_push($eventTitle, $titl);
+        array_push($eventDescription, $des);
+        array_push($eventStart, $st);
+        array_push($eventEnd, $et);
+        array_push($eventLocationName, $locn);
+        array_push($eventZipCode, $zcode);
       }
      }
     }

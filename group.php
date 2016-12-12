@@ -184,12 +184,14 @@ $(document).ready(function(){
       $group_id = array();
       if (!$connection->connect_errno) {
         $sql = "SELECT category,keyword,group_name,group_id FROM about NATURAL JOIN a_group;";
-        $query= $connection->query($sql);
-        while($row = $query->fetch_assoc()){
-          array_push($category, $row['category']);
-          array_push($keywords, $row['keyword']);
-          array_push($groupName, $row['group_name']);
-          array_push($group_id, $row['group_id']);
+        $query= $connection->prepare($sql);
+        $query->execute();
+        $query->bind_result($cat,$keyw,$gn,$gid);
+        while($query->fetch()){
+          array_push($category, $cat);
+          array_push($keywords, $keyw);
+          array_push($groupName, $gn);
+          array_push($group_id, $gid);
         }
       }
    ?>

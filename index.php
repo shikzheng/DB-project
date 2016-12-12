@@ -151,12 +151,14 @@ $(document).ready(function(){
       $group_id = array();
       if (!$connection->connect_errno) {
         $sql = "SELECT category,keyword,group_name,group_id FROM about NATURAL JOIN a_group;";
-        $query= $connection->query($sql);
-        while($row = $query->fetch_assoc()){
-          array_push($category, $row['category']);
-          array_push($keywords, $row['keyword']);
-          array_push($groupName, $row['group_name']);
-          array_push($group_id, $row['group_id']);
+        $query= $connection->prepare($sql);
+        $query->execute();
+        $query->bind_result($cat,$keyw,$gn,$gid);
+        while($query->fetch()){
+          array_push($category, $cat);
+          array_push($keywords, $keyw);
+          array_push($groupName, $gn);
+          array_push($group_id, $gid);
         }
       }
    ?>
@@ -200,14 +202,16 @@ $(document).ready(function(){
 
       if (!$connection->connect_errno) {
         $sql = "SELECT * FROM an_event WHERE start_time < NOW() + INTERVAL 3 DAY AND end_time >= NOW();";
-        $query= $connection->query($sql);
-        while($row = $query->fetch_assoc()){
-          array_push($eventTitle, $row['title']);
-          array_push($eventDescription, $row['description']);
-          array_push($eventStart, $row['start_time']);
-          array_push($eventEnd, $row['end_time']);
-          array_push($eventLocationName, $row['location_name']);
-          array_push($eventZipCode, $row['zipcode']);
+        $query= $connection->prepare($sql);
+        $query->execute();
+        $query->bind_result($eid,$titl,$des,$st,$et,$locn,$zcode);
+        while($query->fetch()){
+          array_push($eventTitle, $titl);
+          array_push($eventDescription, $des);
+          array_push($eventStart, $st);
+          array_push($eventEnd, $et);
+          array_push($eventLocationName, $locn);
+          array_push($eventZipCode, $zcode);
         }
       }
    ?>
