@@ -29,31 +29,37 @@ $eventDescription = array();
 $latitude = array();
 $longitude = array();
 if (!$connection->connect_errno) {
-  $sql = "SELECT title,an_event.description,start_time,end_time,location_name,zipcode,group_id FROM organize NATURAL JOIN an_event WHERE event_id = '" . $eventid . "';";
-  $query= $connection->query($sql);
-  while($row = $query->fetch_assoc()){
-    array_push($title, $row['title']);
-    array_push($description, $row['description']);
-    array_push($startTime, $row['start_time']);
-    array_push($endTime, $row['end_time']);
-    array_push($locationName, $row['location_name']);
-    array_push($zipcode, $row['zipcode']);
-    array_push($groupid, $row['group_id']);
+  $stmt = $connection->prepare("SELECT title,an_event.description,start_time,end_time,location_name,zipcode,group_id FROM organize NATURAL JOIN an_event WHERE event_id = ?");
+  $stmt->bind_param("s", $eventid);
+  $stmt->execute();
+  $stmt->bind_result($ttl, $desc, $stime, $etime, $loc, $zip, $g_id);
+  while($stmt->fetch()){
+    array_push($title, $ttl);
+    array_push($description, $desc);
+    array_push($startTime, $stime);
+    array_push($endTime, $etime);
+    array_push($locationName, $loc);
+    array_push($zipcode, $zip);
+    array_push($groupid, $g_id);
   }
   $gid = $groupid[0];
-  $sql2 = "SELECT group_name FROM a_group WHERE group_id = '" . $gid . "';";
-  $query2= $connection->query($sql2);
-  while($row = $query2->fetch_assoc()){
-    array_push($groupName, $row['group_name']);
+  $stmt2 = $connection->prepare("SELECT group_name FROM a_group WHERE group_id = ?");
+  $stmt2->bind_param("s", $gid);
+  $stmt2->execute();
+  $stmt2->bind_result($g_name);
+  while($stmt2->fetch()){
+    array_push($groupName, $g_name);
   }
 
-  $sql3 = "SELECT address,description,latitude,longitude FROM location WHERE location_name = '" . $locationName[0] . "';";
-  $query3= $connection->query($sql3 );
-  while($row = $query3->fetch_assoc()){
-    array_push($eventAddress, $row['address']);
-    array_push($eventDescription, $row['description']);
-    array_push($latitude, $row['latitude']);
-    array_push($longitude, $row['longitude']);
+  $stmt3 = $connection->prepare("SELECT address,description,latitude,longitude FROM location WHERE location_name = ?");
+  $stmt3->bind_param("s", $locationName[0]);
+  $stmt3->execute();
+  $stmt3->bind_result($addr, $desc, $lat, $long);
+  while($stmt3->fetch()){
+    array_push($eventAddress, $addr);
+    array_push($eventDescription, $desc);
+    array_push($latitude, $lat);
+    array_push($longitude, $long);
   }
 }
 
