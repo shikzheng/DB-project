@@ -18,20 +18,58 @@ $description = array();
 $creator = array();
 $members = array();
 $authorized = array();
-
-
+$categoryString = "";
+$keyWordString = "";
 if (!$connection->connect_errno) {
-  $sql = "SELECT category,keyword,group_name,description,creator,username,authorized FROM about NATURAL JOIN a_group NATURAL JOIN belongs_to WHERE group_id = ?";
+  $sql = "SELECT category,keyword FROM about WHERE group_id = ?";
   $query= $connection->prepare($sql);
   $query->bind_param("i", $groupid);
   $query->execute();
-  $query->bind_result($cat,$keyw,$gn,$des,$cre,$userN,$autho);
+  $query->bind_result($cat,$keyW);
   if (!$query) {
     printf("Errormessage: %s\n", $connection->error);
   }
   while($query->fetch()){
     array_push($category, $cat);
-    array_push($keywords, $keyw);
+    array_push($keywords, $keyW);
+  }
+  if(count($category)==1){
+    $categoryString = $category[0];
+  }else{
+  for($i = 0; $i < count($category);$i++){
+    if($i == 0){
+      $categoryString = $category[0];
+    }else{
+    $categoryString = $categoryString . ', ' . $category[$i];
+   }
+  }
+ }
+
+
+ if(count($keywords)==1){
+   $keyWordString = $keywords[0];
+ }else{
+ for($i = 0; $i < count($keywords);$i++){
+   if($i == 0){
+     $keyWordString = $keywords[0];
+   }else{
+   $keyWordString = $keyWordString . ', ' . $keywords[$i];
+  }
+ }
+}
+
+}
+
+if (!$connection->connect_errno) {
+  $sql = "SELECT group_name,description,creator,username,authorized FROM belongs_to NATURAL JOIN a_group WHERE group_id = ?";
+  $query= $connection->prepare($sql);
+  $query->bind_param("i", $groupid);
+  $query->execute();
+  $query->bind_result($gn,$des,$cre,$userN,$autho);
+  if (!$query) {
+    printf("Errormessage: %s\n", $connection->error);
+  }
+  while($query->fetch()){
     array_push($groupName, $gn);
     array_push($description, $des);
     array_push($creator, $cre);
@@ -101,9 +139,9 @@ body{
   </div>
   <div class=panel-body style="font-size:16px;background-color:#FFFFFF;border-bottom:1px solid #bce8f1;text-align:center;"><b>Group Description</b>: <?php echo $description[0];?>
   </div>
-  <div class=panel-body style="font-size:16px;background-color:#FFFFFF;border-bottom:1px solid #bce8f1;text-align:center;"><b>Group Category</b>: <?php echo $category[0];?>
+  <div class=panel-body style="font-size:16px;background-color:#FFFFFF;border-bottom:1px solid #bce8f1;text-align:center;"><b>Group Category</b>: <?php echo $categoryString;?>
   </div>
-  <div class=panel-body style="font-size:16px;background-color:#FFFFFF;text-align:center;border-bottom:1px solid #bce8f1;"><b>Group Keywords</b>: <?php echo $keywords[0];?>
+  <div class=panel-body style="font-size:16px;background-color:#FFFFFF;text-align:center;border-bottom:1px solid #bce8f1;"><b>Group Keywords</b>: <?php echo $keyWordString;?>
   </div>
   <div style="margin-left:auto;margin-right:auto;width:450px;margin-top:8px;height:auto;text-align:center;">
       <form class="form-signin" method="post" action="GroupPageJoinGroupProcessing.php" name="" style="width:80%;margin-left:auto;margin-right:auto;">
@@ -386,7 +424,7 @@ $(document).ready(function(){
       $query= $connection->prepare($sql);
       $query->bind_param("i", $groupid);
       $query->execute();
-      $query->bind_result($titl,$dex,$st,$et,$loc,$zcode,$eid);
+      $query->bind_result($titl,$des,$st,$et,$loc,$zcode,$eid);
       while($query->fetch()){
         array_push($title2, $titl);
         array_push($description2, $des);
@@ -441,9 +479,6 @@ $(document).ready(function(){
     for(var i = 0, j = 0; j < NumRating.length; i = i+parseInt(NumRating[i]), j++){
         final[j] = AEventRating.slice(i,parseInt(NumRating[j])+i);
     }
-    console.log("PO")
-    console.log(final[0])
-    console.log(final[1])
     var allEventAverageRating = [];
     for(var i = 0; i < final.length; i++){
       var average = 0;
@@ -466,6 +501,7 @@ $(document).ready(function(){
     for(var i = 0; i < allEventAverageRating.length; i++){
       if(allEventAverageRating[i] == 0){
         allEventAverageRating[i] = "No Rating";
+        console.log("all")
         console.log(allEventAverageRating[i])
       }
     }

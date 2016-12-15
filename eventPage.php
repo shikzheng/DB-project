@@ -120,7 +120,7 @@ body{
   </nav>
 <div class="panel panel-info" style="margin-top:20px;">
   <div class=panel-heading style = "text-align:center;">
-    <h2 class=form-signin-heading><?php echo $groupName[0];?>'s Event: <?php echo $title[0];?></h2>
+    <h2 class=form-signin-heading id = "eventWelcome"><?php echo $groupName[0];?>'s Event: <?php echo $title[0];?></h2>
   </div>
   <div class=panel-body style="font-size:16px;background-color:#FFFFFF;border-bottom:1px solid #bce8f1;text-align:center;"><b>Event Description</b>: <?php echo $description[0];?>
   </div>
@@ -241,6 +241,8 @@ body{
 <script type="text/javascript">
 $(document).ready(function(){
 $(this).scrollTop(0);
+document.getElementById('eventWelcome').setAttribute( "onClick", "goToGroupPage()");
+
 document.getElementById('rating_username').value = document.getElementById('current_user').innerHTML;
 
 var EventStartDateTime = new Date(document.getElementById('event_start_time').innerHTML);
@@ -336,6 +338,11 @@ function signUp(){
    if(!isInGroup){
      document.getElementById('signUpMessage').innerHTML = "Sign Up Failed. Please Join This Group First";
    }
+}
+
+function goToGroupPage(){
+  var groupid = <?php echo $groupid[0]; ?>;
+  window.location.href = "groupPage.php?group_page_groupid="+groupid;
 }
 
 </script>

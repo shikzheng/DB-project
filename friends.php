@@ -282,12 +282,6 @@ $(document).ready(function(){
                });
            });
            });
-
-
-
-
-
-
       }
   });
 });
