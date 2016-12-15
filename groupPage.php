@@ -61,11 +61,11 @@ if (!$connection->connect_errno) {
 }
 
 if (!$connection->connect_errno) {
-  $sql = "SELECT group_name,description,creator,username,authorized FROM belongs_to NATURAL JOIN a_group WHERE group_id = ?";
+  $sql = "SELECT group_name,description,creator FROM a_group WHERE group_id = ?";
   $query= $connection->prepare($sql);
   $query->bind_param("i", $groupid);
   $query->execute();
-  $query->bind_result($gn,$des,$cre,$userN,$autho);
+  $query->bind_result($gn,$des,$cre);
   if (!$query) {
     printf("Errormessage: %s\n", $connection->error);
   }
@@ -73,6 +73,19 @@ if (!$connection->connect_errno) {
     array_push($groupName, $gn);
     array_push($description, $des);
     array_push($creator, $cre);
+  }
+}
+
+if (!$connection->connect_errno) {
+  $sql = "SELECT username,authorized FROM belongs_to WHERE group_id = ?";
+  $query= $connection->prepare($sql);
+  $query->bind_param("i", $groupid);
+  $query->execute();
+  $query->bind_result($userN,$autho);
+  if (!$query) {
+    printf("Errormessage: %s\n", $connection->error);
+  }
+  while($query->fetch()){
     array_push($members, $userN);
     array_push($authorized, $autho);
   }
@@ -341,6 +354,7 @@ $(document).ready(function(){
         checkBox.type = "checkbox";
         if(allUserInGroup[i]==groupCreator[0]){
           checkBox.disabled = true;
+
         }
 
         newCell1.appendChild(newText1);
@@ -500,13 +514,12 @@ $(document).ready(function(){
     }
     for(var i = 0; i < allEventAverageRating.length; i++){
       if(allEventAverageRating[i] == 0){
-        allEventAverageRating[i] = "No Rating";
+        allEventAverageRating[i] = "NaN";
         console.log("all")
         console.log(allEventAverageRating[i])
       }
     }
     console.log(allEventAverageRating)
-
     for(var i = 0; i < title2.length; i++){
       var newRow   = tableRef.insertRow(tableRef.rows.length);
       newRow.setAttribute( "onclick", "SelectedEvent(" + eventid[i] + ")");
@@ -525,6 +538,9 @@ $(document).ready(function(){
       var newText5  = document.createTextNode(locationName2[i]);
       var newText6  = document.createTextNode(zipcode2[i]);
       var newText7  = document.createTextNode(allEventAverageRating[i]);
+      if(allEventAverageRating[i] == undefined){
+        newText7  = document.createTextNode("NaN");
+      }
 
       newCell1.appendChild(newText1);
       newCell2.appendChild(newText2);

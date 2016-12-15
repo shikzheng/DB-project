@@ -146,25 +146,68 @@ $(document).ready(function(){
       require_once("config/db.php");
       $connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
       $groupName = array();
-      $category = array();
-      $keywords = array();
       $group_id = array();
       if (!$connection->connect_errno) {
-        $sql = "SELECT category,keyword,group_name,group_id FROM about NATURAL JOIN a_group;";
+        $sql = "SELECT group_name,group_id FROM a_group;";
         $query= $connection->prepare($sql);
         $query->execute();
-        $query->bind_result($cat,$keyw,$gn,$gid);
+        $query->bind_result($gn,$gid);
         while($query->fetch()){
-          array_push($category, $cat);
-          array_push($keywords, $keyw);
           array_push($groupName, $gn);
           array_push($group_id, $gid);
         }
       }
+
+      $categoryArray = array();
+      $keywordArray = array();
+      if (!$connection->connect_errno) {
+        for($i = 0; $i < count($group_id); $i++){
+        $category = array();
+        $keywords = array();
+        $sql = "SELECT category,keyword FROM about WHERE group_id = ?";
+        $query= $connection->prepare($sql);
+        $query->bind_param("i", $group_id[$i]);
+        $query->execute();
+        $query->bind_result($cat,$keyW);
+        if (!$query) {
+          printf("Errormessage: %s\n", $connection->error);
+        }
+        while($query->fetch()){
+          array_push($category, $cat);
+          array_push($keywords, $keyW);
+        }
+        if(count($category)==1){
+          array_push($categoryArray, $category[0]);
+        }else{
+        for($b = 0; $b < count($category);$b++){
+          if($b == 0){
+            $categoryString = $category[0];
+          }else{
+          $categoryString = $categoryString . ', ' . $category[$b];
+         }
+        }
+        array_push($categoryArray, $categoryString);
+       }
+
+       if(count($keywords)==1){
+         array_push($keywordArray, $keywords[0]);
+
+       }else{
+       for($c = 0; $c < count($keywords);$c++){
+         if($c == 0){
+           $keyWordString = $keywords[0];
+         }else{
+         $keyWordString = $keyWordString . ', ' . $keywords[$c];
+        }
+       }
+       array_push($keywordArray, $keyWordString);
+      }
+    }
+  }
    ?>
   groupName = <?php echo json_encode($groupName) ?>;
-  category = <?php echo json_encode($category) ?>;
-  keywords = <?php echo json_encode($keywords) ?>;
+  category = <?php echo json_encode($categoryArray) ?>;
+  keywords = <?php echo json_encode($keywordArray) ?>;
   groupid = <?php echo json_encode($group_id) ?>;
 
   for(var i = 0; i < groupName.length; i++){
